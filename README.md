@@ -39,7 +39,7 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
 ### Option 1. 
   - This can be accessed through the UEFI menu.
 ### Option 2. 
-  - If you cannot do Option #1, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder.
+  - If you cannot do Option #1, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder. Formatting the drive to Free-DOS will delete all files on the drive, so make sure to add all of the files back onto the drive.
 
 #### After completing one of these options, proceed below:
 
@@ -52,8 +52,9 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
 
 ## 4. Flashing the Controller
 ```sas3flash.efi -o -e 7```
+
 - Erases the card's NVRAM
-"-e" = erase 
+
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
 - This flashes the new UEFI and Legacy BIOS firmware with ROM
 
