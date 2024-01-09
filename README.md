@@ -1,6 +1,8 @@
 # IT-Mode
-This is a tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this guide](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/), but this repo contains extra information and makes all of the files used easily accessible. 
+This is a tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this guide](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/), but this repo contains extra information/commentary and makes all of the files used easily accessible.
 
+Some reasons you may want to do this:
+This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 ## Required Items
 - Circuit Board Jumper Pin
 - USB Flash Drive
@@ -21,7 +23,12 @@ This is a tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9
 Here, you will put on the jumper pin as instructed by the tutorial. Do not remove it until it says so. If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
 
 ## 3. Booting the Server and Resetting the Adapter
-Here, boot into the system's UEFI shell. This can be accessed through the UEFI menu or with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder.
+Here, boot into the system's UEFI shell. This can be done in one of two ways:
+### Option 1. 
+  - This can be accessed through the UEFI menu.
+### Option 2. 
+  - If you cannot do Option #1, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder.
+
 
 ```sas3flash.efi -list```
 - This command shows you your SAS Address as mentioned earlier. Record it is you haven't already. It also test that the system can correctly get/use the files.
@@ -36,3 +43,6 @@ Here, boot into the system's UEFI shell. This can be accessed through the UEFI m
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
 
 ```sas3flash.efi -o -sasadd 50060XXXXXXXXXXXX```
+- Here, replace the X's with your SAS Address.
+```sas3flash.efi -list```
+- Use this command once again to double check that all the information on your new HBA are correct. 
