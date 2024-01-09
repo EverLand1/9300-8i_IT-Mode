@@ -1,12 +1,15 @@
 # IT-Mode
 This is a tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this guide](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/), but this repo contains extra information/commentary and makes all of the files used easily accessible.
 
+
+
 Some reasons you may want to do this:
 - Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
 - Avoiding RAID Limitations/Compatibility
 
 This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 
+#### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
 
 ## Required Items
 - Circuit Board Jumper Pin
@@ -36,10 +39,10 @@ If you take the RAID controller off of the motherboard, you can also record the 
 
 ## 3. Booting the Server and Resetting the Adapter
 Here, boot into the system's UEFI shell. This can be done in one of two ways:
-### Option 1. 
+### Option #1
   - This can be accessed through the UEFI menu.
-### Option 2. 
-  - If you cannot do Option #1, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder. Formatting the drive to Free-DOS will delete all files on the drive, so make sure to add all of the files back onto the drive.
+### Option #2 
+  - If Option #1 is not available, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder. Formatting the drive to Free-DOS will delete all files on the drive, so make sure to add all of the files back onto the drive.
 
 #### After completing one of these options, proceed below:
 
