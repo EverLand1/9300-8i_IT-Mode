@@ -22,8 +22,11 @@ This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 Download these files from this repo and put them on a USB. They are necessary for this guide.
 
 - sas3flash.efi      :      Flashing tool
-- sas93008i.bin      :      
-(This file was named "SAS9300_8i_IT.bin" in the linked tutorial. However, my system did not allow me to use the shift or underscore keys while in the UEFI shell, so I renamed it. This will not effect the file in any way.)
+
+Note: Other tutorials aimed at flashing different controllers may use sas2flash.efi instead. The 9300 does not work with sas2flash.efi and requires sas3flash.efi.
+- sas93008i.bin      :      IT Mode Firmware
+
+Note: This file was named "SAS9300_8i_IT.bin" in the linked tutorial. However, my system did not allow me to use the shift or underscore keys while in the UEFI shell, so I renamed it. This will not effect the file in any way.
 - mptsas3.rom        :      Legacy BIOS OROM
 - mpt3x64.rom        :      UEFI BIOS OROM
 
@@ -39,7 +42,7 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
   - If you cannot do Option #1, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder.
 
 
-```sas3flash.efi -list```
+```sas3flash.efi -listall```
 - This command shows you your SAS Address as mentioned earlier. Record it is you haven't already. It also test that the system can correctly get/use the files.
 
 ```sas3flash.efi -f sas93008i.bin -noreset```
@@ -48,7 +51,8 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
 
 ## 4. Flashing the Controller
 ```sas3flash.efi -o -e 7```
-
+- Erases the card's NVRAM
+"-e" = erase 
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
 - This flashes the new UEFI and Legacy BIOS firmware with ROM
 
@@ -56,11 +60,12 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
 - Here, replace the X's with your SAS Address.
 
 ```sas3flash.efi -list```
-- Use this command once again to double check that all the information on your new HBA are correct.
+- Use this command to double check that all the information on your new HBA are correct.
 
 ## Resources
 - MAIN TUTORIAL [How to flash a LSI SAS 3008 HBA (e.g. IBM M1215) to IT mode - ServeTheHome Forum](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/)
 - [Crossflashing of LSI 9341-8i to LSI 9300-8i - ServeTheHome Forum](https://forums.servethehome.com/index.php?threads/crossflashing-of-lsi-9341-8i-to-lsi-9300-8i-success-but-no-smart-pass-through.3522/)
+- [Detailed newcomers' guide to crossflashing LSI 9211/9300/9305/9311/9400/94xx HBA and variants - TrueNAS Forum](https://www.truenas.com/community/resources/detailed-newcomers-guide-to-crossflashing-lsi-9211-9300-9305-9311-9400-94xx-hba-and-variants.54/)
 
 ## File Download Pages
 - [LSI 3008 Firmware - DELL](https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=jmx6t)
