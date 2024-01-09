@@ -2,7 +2,8 @@
 This is a tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this guide](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/), but this repo contains extra information/commentary and makes all of the files used easily accessible.
 
 Some reasons you may want to do this:
-
+- Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
+- Avoiding RAID Limitations/Compatibility
 
 This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 
@@ -13,6 +14,7 @@ This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 
 ## Software Programs
 - [Balena Etcher](https://etcher.balena.io/ "Balena Etcher")
+- [Ventoy](https://www.ventoy.net/en/index.html "Ventoy")
 - [Rufus](https://rufus.ie/en/ "Rufus")
 
 
@@ -46,8 +48,16 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
 ```sas3flash.efi -o -e 7```
 
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
+This flashes the new UEFI and Legacy BIOS firmware with ROM
 
 ```sas3flash.efi -o -sasadd 50060XXXXXXXXXXXX```
 - Here, replace the X's with your SAS Address.
 ```sas3flash.efi -list```
-- Use this command once again to double check that all the information on your new HBA are correct. 
+- Use this command once again to double check that all the information on your new HBA are correct.
+
+## Resources
+- MAIN TUTORIAL [How to flash a LSI SAS 3008 HBA (e.g. IBM M1215) to IT mode - ServeTheHome Forum](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/)
+- [Crossflashing of LSI 9341-8i to LSI 9300-8i - ServeTheHome Forum](https://forums.servethehome.com/index.php?threads/crossflashing-of-lsi-9341-8i-to-lsi-9300-8i-success-but-no-smart-pass-through.3522/)
+
+## File Download Pages
+- [LSI 3008 Firmware - DELL](https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=jmx6t)
