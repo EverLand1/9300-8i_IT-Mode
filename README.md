@@ -2,7 +2,11 @@
 This is a tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this guide](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/), but this repo contains extra information/commentary and makes all of the files used easily accessible.
 
 Some reasons you may want to do this:
+
+
 This video explains this topic very well: https://youtu.be/xEbQohy6v8U
+
+
 ## Required Items
 - Circuit Board Jumper Pin
 - USB Flash Drive
@@ -20,7 +24,8 @@ This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 - mpt3x64.rom        :      UEFI BIOS OROM
 
 ## 2. Preparing the Adapter
-Here, you will put on the jumper pin as instructed by the tutorial. Do not remove it until it says so. If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
+Here, you will put on the jumper pin as instructed by the tutorial. Do not remove it until it says so, which should be at the end of #3.
+If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
 
 ## 3. Booting the Server and Resetting the Adapter
 Here, boot into the system's UEFI shell. This can be done in one of two ways:
