@@ -19,6 +19,8 @@ This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 
 
 ## 1. Getting the files
+Download these files from this repo and put them on a USB. They are necessary for this guide.
+
 - sas3flash.efi      :      Flashing tool
 - sas93008i.bin      :      
 (This file was named "SAS9300_8i_IT.bin" in the linked tutorial. However, my system did not allow me to use the shift or underscore keys while in the UEFI shell, so I renamed it. This will not effect the file in any way.)
@@ -48,10 +50,11 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
 ```sas3flash.efi -o -e 7```
 
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
-This flashes the new UEFI and Legacy BIOS firmware with ROM
+- This flashes the new UEFI and Legacy BIOS firmware with ROM
 
 ```sas3flash.efi -o -sasadd 50060XXXXXXXXXXXX```
 - Here, replace the X's with your SAS Address.
+
 ```sas3flash.efi -list```
 - Use this command once again to double check that all the information on your new HBA are correct.
 
