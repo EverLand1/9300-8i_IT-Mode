@@ -7,7 +7,15 @@ Some reasons you may want to do this:
 - Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
 - Avoiding RAID Limitations/Compatibility
 
-This video explains this topic very well: https://youtu.be/xEbQohy6v8U
+This video explains this topic very well: 
+[![Watch the video](https://img.youtube.com/vi/xEbQohy6v8U/hqdefault.jpg)](https://www.youtube.com/embed/xEbQohy6v8U)
+
+[<img src="https://img.youtube.com/vi/xEbQohy6v8U/hqdefault.jpg" width="600" height="300"/>](https://www.youtube.com/embed/xEbQohy6v8U)
+
+
+
+
+https://youtu.be/xEbQohy6v8U
 
 #### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
 
@@ -27,9 +35,10 @@ Download these files from this repo and put them on a USB. They are necessary fo
 - sas3flash.efi      :      Flashing tool
 
 Note: Other tutorials aimed at flashing different controllers may use sas2flash.efi instead. The 9300 does not work with sas2flash.efi and requires sas3flash.efi.
-- sas93008i.bin      :      IT Mode Firmware
+- SAS9300_8i_IT.bin  :      IT Mode Firmware
 
-Note: This file was named "SAS9300_8i_IT.bin" in the linked tutorial. However, my system did not allow me to use the shift or underscore keys while in the UEFI shell, so I renamed it. This will not effect the file in any way.
+Note: Sometimes there can be trouble with using the "_" and "Shift" keys while in the UEFI shell. If any problems occur, change the name of this file to something without those characters and retry. Just make sure to change your commands accordingly.
+
 - mptsas3.rom        :      Legacy BIOS OROM
 - mpt3x64.rom        :      UEFI BIOS OROM
 
@@ -43,6 +52,8 @@ Here, boot into the system's UEFI shell. This can be done in one of two ways:
   - This can be accessed through the UEFI menu.
 ### Option #2 
   - If Option #1 is not available, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder. Formatting the drive to Free-DOS will delete all files on the drive, so make sure to add all of the files back onto the drive.
+
+![My Image](images/rufus.png)
 
 #### After completing one of these options, proceed below:
 
