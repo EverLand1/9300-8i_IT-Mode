@@ -1,8 +1,8 @@
 # IT-Mode
-This is a updated guide on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this tutorial](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/) from 2016. Most of the screenshots and techniques used in this guide are from that tutorial and [others](#Resources), but this repo compiles them and includes additional updated information/commentary and makes all of the files used easily accessible.
+This is a updated guide on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this tutorial](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/) from 2016. Most of the screenshots and techniques used in this guide are from that tutorial and [others](#resources), but this repo compiles them and includes additional updated information/commentary and makes all of the files used easily accessible.
 
 There are multiple reasons why you may want to flash your RAID controller to make it into a Host Bus Adapter (HBA):
-- Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
+- Using software RAID or filesystems like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?") and [BTRFS](https://itsfoss.com/btrfs/)
 - Avoiding RAID Limitations/Compatibility
 
 [Benefits of Using an HBA](https://www.truenas.com/community/resources/whats-all-the-noise-about-hbas-and-why-cant-i-use-a-raid-controller.139/)
@@ -11,7 +11,7 @@ There are multiple reasons why you may want to flash your RAID controller to mak
 
 [(Video) Hardware RAID Is Dead](https://www.youtube.com/watch?v=l55GfAwa8RI)
 
-#### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
+### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
 
 ## Required Items
 - Circuit Board Jumper Pin
