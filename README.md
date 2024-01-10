@@ -72,7 +72,11 @@ Here, power on the system and boot into the system's UEFI shell. This can be don
 
 &emsp;&emsp;&emsp;This shows the SAS Address as mentioned earlier. Record the SAS Address if you haven't already.
 
+&emsp;![List](images/list.jpg)
+
 &emsp;&emsp;```sas3flash.efi -f SAS9300_8i_IT.bin -noreset```
+
+&emsp;&emsp;![Noreset](images/noreset.jpg)
 
 &emsp;&emsp;&emsp;This erases the running flash/bios on the RAID controller. 
 
@@ -83,12 +87,18 @@ Here, power on the system and boot into the system's UEFI shell. This can be don
 
 - Erases the card's NVRAM
 
+&emsp;![Erase](images/erase.jpg)
+
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
 - This flashes the new UEFI and Legacy BIOS firmware with ROM
+
+&emsp;![Flash Firmware](images/flash.jpg)
 
 ```sas3flash.efi -o -sasadd XXXXXXXXXXXXXXXXX```
 - Here, replace the X's with your SAS Address. DO NOT USE HYPENS, SPACES, ETC.
 - This  flashes the SAS Address back onto the HBA
+
+&emsp;![SASADD](images/sasadd.jpg)
 
 ```sas3flash.efi -listall```
 - Use this command to double check that all the information on your new HBA are correct.
