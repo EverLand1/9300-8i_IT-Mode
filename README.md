@@ -7,15 +7,7 @@ Some reasons you may want to do this:
 - Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
 - Avoiding RAID Limitations/Compatibility
 
-This video explains this topic very well: 
-[![Watch the video](https://img.youtube.com/vi/xEbQohy6v8U/hqdefault.jpg)](https://www.youtube.com/embed/xEbQohy6v8U)
-
-[<img src="https://img.youtube.com/vi/xEbQohy6v8U/hqdefault.jpg" width="600" height="300"/>](https://www.youtube.com/embed/xEbQohy6v8U)
-
-
-
-
-https://youtu.be/xEbQohy6v8U
+This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 
 #### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
 
@@ -47,13 +39,17 @@ Here, you will put on the jumper pin as instructed by the tutorial. Do not remov
 If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
 
 ## 3. Booting the Server and Resetting the Adapter
-Here, boot into the system's UEFI shell. This can be done in one of two ways:
-### Option #1
-  - This can be accessed through the UEFI menu.
-### Option #2 
-  - If Option #1 is not available, you can also access the shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. You also must create an EFI/Boot/ folder filepath inside of the USB drive and add the bootx64.efi file into the Boot folder. Formatting the drive to Free-DOS will delete all files on the drive, so make sure to add all of the files back onto the drive.
+Here, boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as operating system or lack there of:
 
-![My Image](images/rufus.png)
+#### Option #1
+  - Go to UEFI menu during startup and select the UEFI shell option. There are many different ways to get to this menu depending on the system's manufacturer, but it can usually be triggered by spamming a function key during startup. This link includes UEFI/BIOS keys for popular brands, as well as Windows and Linux specific ways to access the menu: https://www.tomshardware.com/reviews/bios-keys-to-access-your-firmware,5732.html
+#### Option #2
+  - If Option #1 is not available, you can also access the UEFI shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. Go to Rufus, select the correct drive under "Device", select "Free-DOS" under "Boot Selection", and select start.
+
+#### WARNING: ALL FILES ON THE SELECTED DRIVE WILL BE DELETED.
+- After has completed formatting to Free-DOS, create a folder on the root of the USB called "EFI". Inside of "EFI", create another folder named "Boot". Move the bootx64.efi file into the "Boot" folder (Resulting filepath is EFI/Boot/bootx64.efi). Also, make sure to add the rest of the required files to the root of the USB.
+
+![Rufus Free-DOS](images/rufus.png)
 
 #### After completing one of these options, proceed below:
 
