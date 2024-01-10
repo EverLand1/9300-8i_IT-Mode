@@ -1,5 +1,5 @@
 # IT-Mode
-This is a updated guide on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this tutorial](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/) from 2016. Most of the screenshots and techniques used in this guide are from that tutorial and [others](/main#resources), but this repo compiles them and includes additional updated information/commentary and makes all of the files used easily accessible.
+This is a updated guide on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this tutorial](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/) from 2016. Most of the screenshots and techniques used in this guide are from that tutorial and others (linked at the bottom of the page, but this repo compiles them and includes additional updated information/commentary and makes all of the files used easily accessible.
 
 There are multiple reasons why you may want to flash your RAID controller to make it into a Host Bus Adapter (HBA):
 - Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
@@ -24,7 +24,7 @@ There are multiple reasons why you may want to flash your RAID controller to mak
 
 
 ## 1. Getting the Files
-Download these files from this repo and put them on a USB. They are necessary for this guide.
+Download all four of these files from this repo and put them on a USB drive. They are necessary for this guide.
 
 - mptsas3.rom&emsp;        :&emsp;      Legacy BIOS OROM
 - mpt3x64.rom&emsp;        :&emsp;      UEFI BIOS OROM
@@ -38,6 +38,9 @@ Download these files from this repo and put them on a USB. They are necessary fo
 ## 2. Preparing the Adapter
 Here, you will put the jumper pin on the RAID controller pins. Make sure to put them on the correct pins as there may be multiple to choose from.
 
+### &emsp;DO NOT TAKE THE JUMPER PIN OFF UNTIL AFTER YOU POWER DOWN AT THE END OF SECTION 3b.
+
+
 &emsp;&emsp;&emsp;![Jumper Pin](images/jumper.jpg)
 
 If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
@@ -45,7 +48,7 @@ If you take the RAID controller off of the motherboard, you can also record the 
 &emsp;&emsp;&emsp;![SAS Address Sticker](images/sasaddress.jpg)
 
 ## 3a. Booting the Server into UEFI Shell
-Here, boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of:
+Here, power on the system and boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of:
 
 ### Option #1
   - Go to the UEFI menu during startup and select the UEFI shell option. There are many different ways to get to this menu depending on the system's manufacturer, but it can usually be triggered by spamming a function key during startup.
@@ -63,11 +66,21 @@ Here, boot into the system's UEFI shell. This can be done through several ways, 
 &emsp;&emsp;&emsp;![USB Files](images/USB.png)
 
 ## 3b. Resetting the Adapter
+1. You should find yourself at a command line showing ```Shell>```.
+2. Now, find to find all available drives on the system, type ```map```.
+3. Your USB drive should be named something along the lines of "Removable Hard Disk". Mount to the alias of that drive. Ex: ```mount fs0```. Your terminal should now read ```fs0:\>```.
+4. Type ```dir``` to see the filesystem on that drive. If you do not see the files you put on the USB drive, redo the past few commands until you find the correct drive.
+5. Type these two commands:
 
-```sas3flash.efi -listall```
-- This command shows the SAS Address as mentioned earlier. Record the SAS Address if you haven't already. It also tests that you correctly did Step 3a.
+&emsp;&emsp;```sas3flash.efi -listall```
 
-```sas3flash.efi -f sas93008i.bin -noreset```
+&emsp;&emsp;&emsp;This shows the SAS Address as mentioned earlier. Record the SAS Address if you haven't already.
+
+&emsp;&emsp;```sas3flash.efi -f SAS9300_8i_IT.bin -noreset```
+
+&emsp;&emsp;&emsp;This erases the running flash/bios on the RAID controller. 
+
+### &emsp;Power down the server and take the jumper pin off of the RAID controller.
 
 ## 4. Flashing the Controller
 ```sas3flash.efi -o -e 7```
@@ -77,10 +90,11 @@ Here, boot into the system's UEFI shell. This can be done through several ways, 
 ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
 - This flashes the new UEFI and Legacy BIOS firmware with ROM
 
-```sas3flash.efi -o -sasadd 50060XXXXXXXXXXXX```
+```sas3flash.efi -o -sasadd XXXXXXXXXXXXXXXXX```
 - Here, replace the X's with your SAS Address. DO NOT USE HYPENS, SPACES, ETC.
+- This  flashes the SAS Address back onto the HBA
 
-```sas3flash.efi -list```
+```sas3flash.efi -listall```
 - Use this command to double check that all the information on your new HBA are correct.
 
 ### You are now able to reboot the system and have completed this guide.
