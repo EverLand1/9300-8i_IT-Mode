@@ -16,11 +16,7 @@ There are multiple reasons why you may want to flash your RAID controller to mak
 ## Required Items
 - Circuit Board Jumper Pin
 - USB Flash Drive
-
-## Software Programs
-- [Balena Etcher](https://etcher.balena.io/ "Balena Etcher")
-- [Ventoy](https://www.ventoy.net/en/index.html "Ventoy")
-- [Rufus](https://rufus.ie/en/ "Rufus")
+- [Rufus Software](https://rufus.ie/en/ "Rufus")
 
 
 ## 1. Getting the Files
