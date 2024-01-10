@@ -1,13 +1,15 @@
 # IT-Mode
-This is a updated tutorial on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this guide](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/), but this repo contains additional information/commentary and makes all of the files used easily accessible.
+This is a updated guide on how to flash IT mode firmware to your LSI/Avago/Broadcom 9300-8i RAID Controller. It is largely based on [this tutorial](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/) from 2016. Most of the screenshots and techniques used in this guide are from that tutorial, but this repo contains additional updated information/commentary and makes all of the files used easily accessible.
 
-
-
-Some reasons you may want to do this:
+There are multiple reasons why you may want to flash your RAID controller to make it into a Host Bus Adapter (HBA):
 - Using software RAID or filesystem like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?")
 - Avoiding RAID Limitations/Compatibility
 
-This video explains this topic very well: https://youtu.be/xEbQohy6v8U
+[Benefits of Using an HBA](https://www.truenas.com/community/resources/whats-all-the-noise-about-hbas-and-why-cant-i-use-a-raid-controller.139/)
+
+[(Video) RAID vs HBA SAS controllers](https://youtu.be/xEbQohy6v8U)
+
+[(Video) Hardware RAID Is Dead](https://www.youtube.com/watch?v=l55GfAwa8RI)
 
 #### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
 
@@ -21,26 +23,29 @@ This video explains this topic very well: https://youtu.be/xEbQohy6v8U
 - [Rufus](https://rufus.ie/en/ "Rufus")
 
 
-## 1. Getting the files
+## 1. Getting the Files
 Download these files from this repo and put them on a USB. They are necessary for this guide.
 
-- sas3flash.efi      :      Flashing tool
+- mptsas3.rom&emsp;        :&emsp;      Legacy BIOS OROM
+- mpt3x64.rom&emsp;        :&emsp;      UEFI BIOS OROM
+- sas3flash.efi&emsp;      :&emsp;      Flashing tool
 
-Note: Other tutorials aimed at flashing different controllers may use sas2flash.efi instead. The 9300 does not work with sas2flash.efi and requires sas3flash.efi.
+&emsp; _Note: Other tutorials aimed at flashing different controllers including 9200 models may use sas2flash.efi instead. The 9300 does not work with sas2flash.efi and requires sas3flash.efi._
+- SAS9300_8i_IT.bin&emsp;  :&emsp;      IT Mode Firmware
 
-- SAS9300_8i_IT.bin  :      IT Mode Firmware
-
-Note: Sometimes there can be trouble with using the "_" and "Shift" keys while in the UEFI shell. If any problems occur, change the name of this file to something without those characters and retry. Just make sure to change your commands accordingly.
-
-- mptsas3.rom        :      Legacy BIOS OROM
-- mpt3x64.rom        :      UEFI BIOS OROM
+&emsp; _Note: Sometimes there can be trouble with using the "_" and "Shift" keys while in the UEFI shell. If any problems occur, change the name of this file to something without those characters and retry. Just make sure to change your commands accordingly._
 
 ## 2. Preparing the Adapter
-Here, you will put on the jumper pin as instructed by the tutorial. Do not remove it until it says so, which should be at the end of #3.
+Here, you will put the jumper pin on the RAID controller pins. Make sure to put them on the correct pins as there may be multiple to choose from.
+
+&emsp;&emsp;&emsp;![Jumper Pin](images/jumper.jpg)
+
 If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
 
+&emsp;&emsp;&emsp;![SAS Address Sticker](images/sasaddress.jpg)
+
 ## 3a. Booting the Server into UEFI Shell
-Here, boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as operating system or lack there of:
+Here, boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of:
 
 ### Option #1
   - Go to the UEFI menu during startup and select the UEFI shell option. There are many different ways to get to this menu depending on the system's manufacturer, but it can usually be triggered by spamming a function key during startup.
@@ -52,6 +57,10 @@ Here, boot into the system's UEFI shell. This can be done through several ways, 
 - After has completed formatting to Free-DOS, create a folder on the root of the USB called "EFI". Inside of "EFI", create another folder named "Boot". Move the bootx64.efi file into the "Boot" folder (Resulting filepath is EFI/Boot/bootx64.efi). Also, make sure to add the rest of the required files to the root of the USB.
 
 &emsp;&emsp;&emsp;![Rufus Free-DOS](images/rufus.png)
+
+#### &emsp;&emsp;&emsp;Here is what your drive should look like after formatting it in Rufus and adding back the required files.
+
+&emsp;&emsp;&emsp;![USB Files](images/USB.png)
 
 ## 3b. Resetting the Adapter
 
@@ -74,6 +83,10 @@ Here, boot into the system's UEFI shell. This can be done through several ways, 
 ```sas3flash.efi -list```
 - Use this command to double check that all the information on your new HBA are correct.
 
+### You are now able to reboot the system and have completed this guide.
+
+&emsp;&emsp;Command in UEFI shell: ```reset```
+## Please leave any feedback or questions! 
 # Resources
 - MAIN TUTORIAL - [How to flash a LSI SAS 3008 HBA (e.g. IBM M1215) to IT mode - ServeTheHome Forum](https://www.servethehome.com/flash-lsi-sas-3008-hba-e-g-ibm-m1215-mode/)
 - [Crossflashing of LSI 9341-8i to LSI 9300-8i - ServeTheHome Forum](https://forums.servethehome.com/index.php?threads/crossflashing-of-lsi-9341-8i-to-lsi-9300-8i-success-but-no-smart-pass-through.3522/)
