@@ -75,9 +75,9 @@ Download all five of these files from this repo and put them on a USB drive. The
 
 5. Enable the system to boot to the drive in BIOS. Once again these settings vary depending on manufacturer. 
 
-&emsp;&emsp;- "Secure Boot" to Disabled
+&emsp;&emsp;- "Secure Boot" to "Disabled"
 
-&emsp;&emsp;- Boot Mode from "Legacy" to "UEFI" or "Auto"
+&emsp;&emsp;- "Boot Mode" from "Legacy" to "UEFI" or "Auto"
 
   _Note: On my system, a Lenovo ThinkServer, this setting was found under "Boot Manager" then "Boot Mode". Again, manufacturer specific. THIS MAY NOT BE AVAILABLE OR NECESSARY ON ALL SYSTEMS._
   
