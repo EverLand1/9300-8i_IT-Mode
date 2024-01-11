@@ -6,7 +6,7 @@ This is a updated guide on how to flash IT mode firmware to your LSI/Avago/Broad
 
 ## Why would I want to flash my RAID controller?
 There are multiple reasons why you may want to flash your RAID controller to make it into a Host Bus Adapter (HBA):
-- Using software RAID or filesystems like [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS?") and [BTRFS](https://itsfoss.com/btrfs/)
+- Using software RAID or filesystems including [ZFS](https://itsfoss.com/what-is-zfs/ "What is ZFS? - It's FOSS") and [BTRFS](https://itsfoss.com/btrfs/ "What is BTRFS - It's FOSS")
 - Avoiding RAID Limitations/Compatibility
 
 [Benefits of Using an HBA](https://www.truenas.com/community/resources/whats-all-the-noise-about-hbas-and-why-cant-i-use-a-raid-controller.139/)
@@ -24,8 +24,9 @@ There are multiple reasons why you may want to flash your RAID controller to mak
 - Firmware Files (located in this repo)
 
 ## 1. Getting the Files
-Download all four of these files from this repo and put them on a USB drive. They are necessary for this guide.
+Download all five of these files from this repo and put them on a USB drive. They are necessary for this guide.
 
+- bootx64.efi&emsp;        :&emsp;      UEFI Shell Boot File
 - mptsas3.rom&emsp;        :&emsp;      Legacy BIOS OROM
 - mpt3x64.rom&emsp;        :&emsp;      UEFI BIOS OROM
 - sas3flash.efi&emsp;      :&emsp;      Flashing tool
@@ -44,7 +45,7 @@ Download all four of these files from this repo and put them on a USB drive. The
 
 2. After the drive has completed formatting to Free-DOS, create a folder on the root of the USB named "EFI".
 3. Inside that folder, create another folder named "Boot".
-4. Move the bootx64.efi file into the "Boot" folder **(Resulting filepath is EFI/Boot/bootx64.efi)**.
+4. Move the bootx64.efi file into the "Boot" folder. **(Resulting filepath is EFI/Boot/bootx64.efi)**
 5. Now add all required files from this repo to the root of the USB.
 
 #### &emsp;&emsp;Here is what your drive should look like after formatting it in Rufus and adding back the required files.
@@ -106,12 +107,12 @@ Download all four of these files from this repo and put them on a USB drive. The
 
 &emsp;![Erase](images/erase.jpg)
 
-3. Next, type this command: ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
+3. Next, type: ```sas3flash.efi -f SAS9300_8i_IT.bin -b mptsas3.rom -b mpt3x64.rom```
 - This flashes the new UEFI and Legacy BIOS firmware with ROM
 
 &emsp;![Flash Firmware](images/flash.jpg)
 
-4. Now, type this command: ```sas3flash.efi -o -sasadd XXXXXXXXXXXXXXXXX```
+4. Type: ```sas3flash.efi -o -sasadd XXXXXXXXXXXXXXXXX```
 - Here, replace the X's with your SAS Address. DO NOT USE HYPENS, SPACES, ETC.
 - This  flashes the SAS Address back onto the HBA
 
@@ -122,7 +123,8 @@ Download all four of these files from this repo and put them on a USB drive. The
 
 ## 6. Complete!
 - You are now able to reboot the system and have completed this guide.
-&esmp;&esmp; - Command in UEFI shell: ```reset```
+
+&emsp;&emsp; - Command in UEFI shell: ```reset```
 
 ## Please leave any feedback or questions!
 
