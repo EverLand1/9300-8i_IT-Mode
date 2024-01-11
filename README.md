@@ -39,18 +39,15 @@ Here, you will put the jumper pin on the RAID controller pins. Make sure to put 
 
 &emsp;&emsp;&emsp;![Jumper Pin](images/jumper.jpg)
 
-If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. You can do this later, but if possible, I would recommend doing it now.
+If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. DO THIS NOW. This may involve taking apart the RAID controller in case it is hidden. This should only require a Phillips screwdriver.
 
 &emsp;&emsp;&emsp;![SAS Address Sticker](images/sasaddress.jpg)
 
 ## 3a. Booting the Server into UEFI Shell
-Here, power on the system and boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of:
-
-### Option #1
-  - Go to the UEFI menu during startup and select the UEFI shell option. There are many different ways to get to this menu depending on the system's manufacturer, but it can usually be triggered by spamming a function key during startup.
-  - [This article](https://www.tomshardware.com/reviews/bios-keys-to-access-your-firmware,5732.html) includes UEFI/BIOS keys for popular brands, as well as Windows and Linux specific ways to access the menu.
-### Option #2
-  - If Option #1 is not available, you can also access the UEFI shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. Launch Rufus, select the correct drive under "Device", select "Free-DOS" under "Boot Selection", and select start.
+Before powering on the machine, unplug any external drives that are on the system. This is not necessary, but it may make the process easier later. Next, plug in the USB drive
+- Power on the system and boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of:
+### Booting from an External Drive
+  - You can also access the UEFI shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. Launch Rufus, select the correct drive under "Device", select "Free-DOS" under "Boot Selection", and select start.
 
 #### &emsp;&emsp;&emsp; WARNING: ALL FILES ON THE SELECTED DRIVE WILL BE DELETED.
 - After has completed formatting to Free-DOS, create a folder on the root of the USB called "EFI". Inside of "EFI", create another folder named "Boot". Move the bootx64.efi file into the "Boot" folder (Resulting filepath is EFI/Boot/bootx64.efi). Also, make sure to add the rest of the required files to the root of the USB.
@@ -61,10 +58,13 @@ Here, power on the system and boot into the system's UEFI shell. This can be don
 
 &emsp;&emsp;&emsp;![USB Files](images/USB.png)
 
+There are many different ways to get to this menu depending on the system's manufacturer, but it can usually be triggered by spamming a function key during startup.
+  - [This article](https://www.tomshardware.com/reviews/bios-keys-to-access-your-firmware,5732.html) includes UEFI/BIOS keys for popular brands, as well as Windows and Linux specific ways to access the UEFI menu.
+
 ## 3b. Resetting the Adapter
 1. You should find yourself at a command line showing ```Shell>```.
 2. Now, find to find all available drives on the system, type ```map```.
-3. Your USB drive should be named something along the lines of "Removable Hard Disk". Mount to the alias of that drive. Ex: ```mount fs0```. Your terminal should now read ```fs0:\>```.
+3. Your USB drive should be named something along the lines of "Removable Hard Disk". If not, choose the first drive that shows up. Mount to the alias of that drive. For example, if the drive is named ```fs0```, type ```fs0:```. Your terminal should now read ```fs0:\>``` as you have successfully mounted the drive.
 4. Type ```dir``` to see the filesystem on that drive. If you do not see the files you put on the USB drive, redo the past few commands until you find the correct drive.
 5. Type these two commands:
 
