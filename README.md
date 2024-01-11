@@ -11,13 +11,12 @@ There are multiple reasons why you may want to flash your RAID controller to mak
 
 [(Video) Hardware RAID Is Dead](https://www.youtube.com/watch?v=l55GfAwa8RI)
 
-### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/ unrecoverable. We will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
+### Warning: Before proceeding, do note that this is a risky process. Issues with firmware flashes can render your card “bricked” and unusable/unrecoverable. I will not be held responsible if this happens to your card. By following this guide, you accept all risks of damaging your card.
 
 ## Required Items
 - Circuit Board Jumper Pin
 - USB Flash Drive
 - [Rufus Software](https://rufus.ie/en/ "Rufus")
-
 
 ## 1. Getting the Files
 Download all four of these files from this repo and put them on a USB drive. They are necessary for this guide.
@@ -31,23 +30,8 @@ Download all four of these files from this repo and put them on a USB drive. The
 
 &emsp; _Note: Sometimes there can be trouble with using the "_" and "Shift" keys while in the UEFI shell. If any problems occur, change the name of this file to something without those characters and retry. Just make sure to change your commands accordingly._
 
-## 2. Preparing the Adapter
-Here, you will put the jumper pin on the RAID controller pins. Make sure to put them on the correct pins as there may be multiple to choose from.
-
-### &emsp;DO NOT TAKE THE JUMPER PIN OFF UNTIL AFTER YOU POWER DOWN AT THE END OF SECTION 3b.
-
-
-&emsp;&emsp;&emsp;![Jumper Pin](images/jumper.jpg)
-
-If you take the RAID controller off of the motherboard, you can also record the SAS Address of the controller. DO THIS NOW. This may involve taking apart the RAID controller in case it is hidden. This should only require a Phillips screwdriver.
-
-&emsp;&emsp;&emsp;![SAS Address Sticker](images/sasaddress.jpg)
-
-## 3a. Booting the Server into UEFI Shell
-Before powering on the machine, unplug any external drives that are on the system. This is not necessary, but it may make the process easier later. Next, plug in the USB drive
-- Power on the system and boot into the system's UEFI shell. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of:
-### Booting from an External Drive
-  - You can also access the UEFI shell with a USB flash drive formatted into a bootable Free-DOS drive using Rufus. Launch Rufus, select the correct drive under "Device", select "Free-DOS" under "Boot Selection", and select start.
+## 2. Preparing the USB Drive
+- To access the UEFI shell later on with the required files, you must format your USB flash drive into a bootable Free-DOS drive using Rufus. Launch Rufus, select the correct drive under **"Device"**, select **"Free-DOS"** under **"Boot Selection"**, and select **"Start"**.
 
 #### &emsp;&emsp;&emsp; WARNING: ALL FILES ON THE SELECTED DRIVE WILL BE DELETED.
 - After has completed formatting to Free-DOS, create a folder on the root of the USB called "EFI". Inside of "EFI", create another folder named "Boot". Move the bootx64.efi file into the "Boot" folder (Resulting filepath is EFI/Boot/bootx64.efi). Also, make sure to add the rest of the required files to the root of the USB.
@@ -58,10 +42,35 @@ Before powering on the machine, unplug any external drives that are on the syste
 
 &emsp;&emsp;&emsp;![USB Files](images/USB.png)
 
-There are many different ways to get to this menu depending on the system's manufacturer, but it can usually be triggered by spamming a function key during startup.
+## 3. Preparing the Adapter
+Here, you will put the jumper pin on the RAID controller pins. Make sure to put them on the correct pins as there may be multiple to choose from. 
+
+&emsp; _Note: I have seen several people state that using a jumper pin is not necessary. In my testing, I have not had success when using their methods, so this tutorial follows the approach of using a jumper pin. If you attempt to do it [this way](https://www.truenas.com/community/threads/how-to-flashing-lsi-sas-hba-controller-efi-uefi.78457/), please note that you must use slightly different commands. If you do not have success, you can fix it by beginning this guide from the very beginning._
+
+### &emsp;DO NOT TAKE THE JUMPER PIN OFF UNTIL AFTER YOU POWER DOWN AT THE END OF SECTION 5.
+
+&emsp;&emsp;&emsp;![Jumper Pin](images/jumper.jpg)
+
+Next, you must also record the SAS Address of the controller. DO THIS NOW. This may involve taking apart the RAID controller in case it is hidden. However, that should only require a Phillips screwdriver.
+
+&emsp;&emsp;&emsp;![SAS Address Sticker](images/sasaddress.jpg)
+
+## 4. Booting the Server into UEFI Shell
+
+Before powering on the machine, unplug any external drives that are on the system. This is not necessary, but it may make the process easier later. Next, plug in the USB drive with the firmware files.
+
+First, you must access the BIOS/UEFI menu to make sure you can boot to the UEFI shell from this USB drive. This can be done through several ways, depending on your system's manufacturer, as well as the operating system or lack there of. It can usually be triggered by spamming a function key during startup.
   - [This article](https://www.tomshardware.com/reviews/bios-keys-to-access-your-firmware,5732.html) includes UEFI/BIOS keys for popular brands, as well as Windows and Linux specific ways to access the UEFI menu.
 
-## 3b. Resetting the Adapter
+Now, you must enable the system to boot to the drive in BIOS. Once again these settings vary depending on manufacturer. 
+- "Secure Boot" to Disabled
+- Boot Mode from "Legacy" to "UEFI" or "Auto"
+
+  _Note: On my system, a Lenovo ThinkServer, this setting was found under "Boot Manager" then "Boot Mode". Again, manufacturer specific. THIS MAY NOT BE AVAILABLE OR NEEDED ON ALL SYSTEMS._
+  
+Save these changes and restart the system. Now you must boot to the USB drive. If possible, you can access the boot menu during startup very similar to the BIOS menu. However, if you do not have that option, you can go back to the BIOS menu and change the boot sequence to make the UEFI USB Drive the first device the system boots to upon startup. You will now be able to boot to the USB.
+
+## 5. Resetting the Adapter
 1. You should find yourself at a command line showing ```Shell>```.
 2. Now, find to find all available drives on the system, type ```map```.
 3. Your USB drive should be named something along the lines of "Removable Hard Disk". If not, choose the first drive that shows up. Mount to the alias of that drive. For example, if the drive is named ```fs0```, type ```fs0:```. Your terminal should now read ```fs0:\>``` as you have successfully mounted the drive.
@@ -76,13 +85,13 @@ There are many different ways to get to this menu depending on the system's manu
 
 &emsp;&emsp;```sas3flash.efi -f SAS9300_8i_IT.bin -noreset```
 
-&emsp;&emsp;![Noreset](images/noreset.jpg)
-
 &emsp;&emsp;&emsp;This erases the running flash/bios on the RAID controller. 
+
+&emsp;&emsp;![Noreset](images/noreset.jpg)
 
 ### &emsp;Power down the server and take the jumper pin off of the RAID controller.
 
-## 4. Flashing the Controller
+## 6. Flashing the Controller
 ```sas3flash.efi -o -e 7```
 
 - Erases the card's NVRAM
@@ -102,6 +111,8 @@ There are many different ways to get to this menu depending on the system's manu
 
 ```sas3flash.efi -list```
 - Use this command to double check that all the information on your new HBA are correct.
+
+## 6. Complete!
 
 ### You are now able to reboot the system and have completed this guide.
 
