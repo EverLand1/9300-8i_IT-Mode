@@ -138,3 +138,4 @@ Download all five of these files from this repo and put them on a USB drive. The
 - [Detailed newcomers' guide to crossflashing LSI 9211/9300/9305/9311/9400/94xx HBA and variants - TrueNAS Forum](https://www.truenas.com/community/resources/detailed-newcomers-guide-to-crossflashing-lsi-9211-9300-9305-9311-9400-94xx-hba-and-variants.54/)
 - [[HOW-TO] Flashing LSI SAS HBA Controller [EFI/UEFI] - TrueNAS Forum](https://www.truenas.com/community/threads/how-to-flashing-lsi-sas-hba-controller-efi-uefi.78457/)
 - Older Card Versions - [LSI SAS 2008 RAID Controller/HBA Information - ServeTheHome Forum](https://www.servethehome.com/lsi-sas-2008-raid-controller-hba-information/)
+- [Outdated Firmware Version Notice - iXsystems](https://www.truenas.com/docs/files/LSI9300xxFirmwareUpdatev1_0.pdf)
