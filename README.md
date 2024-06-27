@@ -31,10 +31,17 @@ Download all five of these files from this repo and put them on a USB drive. The
 - mpt3x64.rom&emsp;        :&emsp;      UEFI BIOS OROM
 - sas3flash.efi&emsp;      :&emsp;      Flashing tool
 
-&emsp; _Note: Other tutorials aimed at flashing older models including 9200 models may use sas2flash.efi instead. The 9300 does not work with sas2flash.efi and requires sas3flash.efi._
+&emsp; _Note: Other tutorials aimed at flashing older models including 9200 models may use sas2flash.efi instead. The 9300 model does not work with sas2flash.efi and requires sas3flash.efi. This guide does not cover 9200 model controllers, but there is a detailed tutorial [here](https://www.servethehome.com/lsi-sas-2008-raid-controller-hba-information/)._
 - SAS9300_8i_IT.bin&emsp;  :&emsp;      IT Mode Firmware
 
-&emsp; _Note: Sometimes there can be trouble with using the "__" and "Shift" keys while in the UEFI shell. If any problems occur, change the name of this file to something without those characters and retry, adjusting the following commands accordingly._
+&emsp; _Note #1: There is a [reset bug](https://github.com/EverLand1/9300-8i_IT-Mode/issues/1) present in firmware versions below 16.00.12.00. Those earlier versions can lead to performance issues causing the controller to reset when using SATA HDDs. An updated version of the firmware has been added to this repo. The old firmware version (16.00.10.00) will still be located in this repo due to archival purposes and as another option for SAS HDD systems._
+
+Here is iX-System's description of the issue: 
+> Servers with the LSI 9300 HBA may experience some performance issues causing the controller to reset when using SATA HDDs.
+iXsystems has worked with Broadcom to provide a firmware update that resolves the controller reset issue. If you have the LSI 9300 HBA with firmware version 16.00.12.00 or earlier installed and would like to resolve the occasional controller reset from this issue, follow these instructions. Please note that the firmware update is only available from iXsystems.”
+**Please Note: This problem only applies to firmware versions below 16.00.12.00 and only affects SATA drives. SAS drives are not affected.**
+
+&emsp; _Note #2: Sometimes there can be trouble with using the "__" and "Shift" keys while in the UEFI shell. If any problems occur, change the name of this file to something without those characters and retry, adjusting the following commands accordingly._
 
 ## 2. Preparing the USB Drive
 1. To access the UEFI shell later on with the required files, you must format your USB flash drive into a bootable Free-DOS drive using Rufus. Launch Rufus, select the correct drive under **"Device"**, select **"Free-DOS"** under **"Boot Selection"**, and click **"Start"**. This should only take a couple seconds.
