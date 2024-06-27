@@ -85,7 +85,7 @@ Download all five of these files from this repo and put them on a USB drive. The
 6. Boot to the USB drive. If possible, you can access the boot menu during startup similarly to the BIOS menu. However, you can also go back to the BIOS menu and change the boot sequence to make the UEFI USB Drive the first device the system boots to upon startup. You will now be able to boot to the USB.
 
 ## 5. Resetting the Adapter
-1. You should find yourself at a ```Shell>``` command line prompt. If you are experienced with using the terminal or are adventerous, here are some interesting [commands](https://www.sys-hint.com/3893-How-to-Use-UEFI-Interactive-Shell-and-Its-Common-Commands) you can play around with while in this shell.
+1. You should find yourself at a ```Shell>``` command line prompt. If you are experienced with using the terminal or are adventerous, here are some interesting [commands](https://manuais.iessanclemente.net/images/a/a6/EFI-ShellCommandManual.pdf) you can play around with while in this shell.
 2. Now, to find all available drives on the system, type ```map```. This may already show up when you are first brought into the shell.
 3. Your USB drive should be named something along the lines of "Removable Hard Disk". If not, choose the first drive that shows up first. Mount to the alias of that drive. For example, if the drive is named ```fs0```, type ```fs0:``` (remember the colon). Your terminal prompt should now read ```fs0:\>``` as you have successfully mounted the drive.
 4. Type ```dir``` to see the filesystem on that drive (Equivalent of using ```ls``` in Linux.). If you do not see the files you put on the USB drive, retry the previous commands beginning with ```map``` until you find the correct drive.
