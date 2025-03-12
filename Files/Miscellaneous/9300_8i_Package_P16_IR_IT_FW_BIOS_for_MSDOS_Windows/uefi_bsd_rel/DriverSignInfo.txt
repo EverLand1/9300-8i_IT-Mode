@@ -1,0 +1,4 @@
+The driver binary in the folder "Signed" is signed with Microsoft UEFI Driver sign keys to enable secure boot on supported platforms.
+
+The files in this folder are unsigned.
+

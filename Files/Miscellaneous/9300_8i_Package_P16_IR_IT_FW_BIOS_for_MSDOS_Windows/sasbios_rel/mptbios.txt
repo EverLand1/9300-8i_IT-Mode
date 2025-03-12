@@ -1,0 +1,1783 @@
+****************************************************************************
+                                  MPTBIOS.TXT
+*****************************************************************************
+
+This file presents general information about the Avago Technologies SAS BIOS and
+Configuration Utility.
+
+Copyright 2000-2018 Avago Technologies. All rights reserved.
+
+This text file is divided into these sections:
+
+SAS BIOS
+   Features
+   Boot Initialization with SCSI BIOS Boot Specification
+   CD-ROM Boot Initialization
+   Starting the SAS BIOS Configuration Utility
+   Using the Configuration Utility
+    Adapter List
+    Global Properties
+    Adapter Properties
+    SAS Topology
+    Device Properties
+    Format/Verify Screens
+    SAS Topology - More Keys
+    Advanced Adapter Properties
+    Advanced Device Properties
+    Adapter Timing Properties
+    Integrated RAID Configuration and Management Screens
+    Exiting the SAS Configuration Utility
+
+
+*  *  *  *  *  *  *  *  *  *  *  * SAS BIOS *  *  *  *  *  *  *  *  *  *  *
+
+A SAS BIOS is the bootable ROM code that manages SAS hardware resources. It is
+specific to a family of Avago Technologies SAS controllers or processors.
+A SAS BIOS integrates with a standard system BIOS, extending the standard
+disk service routine provided through INT13h.
+
+During the boot time initialization, the SAS BIOS determines if there are other
+hard disks, such as an IDE drive, already installed by the system BIOS.  If
+there are, the SAS BIOS maps any SAS or SATA drives it finds behind the drive(s)
+already installed. Otherwise, the SAS BIOS installs drives starting with the
+system boot drive. In this case, the system boots from a drive controlled by
+the SAS BIOS. The Avago Technologies SAS BIOS supports the
+BIOS Boot Specification (BBS).
+
+The next section, "Boot Initialization with BIOS Boot Specification (BBS),"
+discusses selecting boot and drive order.
+
+
+*  *  *  *  *  *  *  *  *  *  * Features *  *  *  *  *  *  *  *  *  *  *  *
+
+The SAS BIOS features include:
+
+o Configuration for up to 256 adapters-any 4 can be chosen for
+  INT13 (boot) support
+
+o Support for Message Passing Technology
+
+o Support for the following family of third-generation SAS Controllers:
+    o SAS3004
+    o SAS3008
+    o SAS3108
+    o SAS3216
+    o SAS3224
+    o SAS3316
+    o SAS3324
+
+o Support for SAS and SATA devices
+
+o Support for Integrated RAID initialization (with proper firmware)
+
+
+*  *  *  *  Boot Initialization with BIOS Boot Specification (BBS) *  *  *
+
+The SAS BIOS provides support for the BIOS Boot Specification (BBS) which
+allows you to choose which device to boot from by selecting the priority.
+
+To use this feature, the system BIOS must also be compatible with the BBS. If
+your system supports the BBS, then you will use the system BIOS setup menu to
+select the boot and drive order. In the system BIOS setup, the Boot Connection
+Devices menu appears with a list of available boot options. Use that menu to
+select the device and rearrange the order. Then exit to continue the boot
+process.
+
+
+*  *  *  *  *  *  *  *  * CD-ROM Boot Initialization *  *  *  *  *  *  *  *  *
+
+The SAS BIOS supports boot initialization from a CD-ROM drive.
+The five types of supported emulation are:
+
+     o No emulation disk
+     o Floppy 1.2 Mbyte emulation disk
+     o Floppy 1.44 Mbyte emulation disk
+     o Floppy 2.88 Mbyte emulation disk
+     o Hard disk emulation
+
+The type of emulation assigns the drive letter for the CD-ROM. For example,
+if a 1.44 Mbyte floppy emulation CD was loaded, then the CD-ROM drive would
+become the designated A: drive, and the existing floppy would become drive B:.
+
+
+*  *  *  *  *  * Starting the SAS BIOS Configuration Utility *  *  *  *  *  *
+
+If you have SAS BIOS and it includes the SAS BIOS Configuration Utility,
+you can change the default configuration of your SAS host adapters.
+You may decide to alter these default values if there is a conflict between
+device settings or if you need to optimize system performance.
+
+You can see the version number of the SAS BIOS in a banner displayed on your
+computer monitor during boot. If the utility is available, this message
+also appears on your monitor:
+
+     Press Ctrl-C to start Avago Technologies Configuration Utility...
+
+This message remains on your screen for about five seconds, giving you time
+to start the utility. If you decide to press "Ctrl-C", the message changes
+to:
+
+     Please wait, invoking SAS Configuration Utility...
+
+After a brief pause, your computer monitor displays the Main Menu of the
+SAS BIOS Configuration Utility.
+
+
+Some of the messages that may appear during the boot process are:
+
+1.  "Adapter removed from boot order!" appears when an adapter is removed from
+    the system or relocated behind a PCI bridge.
+
+2.  "Adapter configuration may have changed, reconfiguration is suggested!"
+    appears if none of the information in the NVRAM is valid.
+
+3.  "Updating Adapter List!" appears when less than four adapters are in the
+    boot order and more adapters exist than are shown.
+
+4.  "Preferred boot device is missing, reconfiguration is suggested!" appears
+    if the user has selected a preferred or alternate boot device and is not
+    detected during BIOS initialization.
+
+IMPORTANT: The SAS BIOS Configuration Utility is a powerful tool. If, while
+           using it, you somehow disable all of your controllers, pressing
+           Ctrl-A after memory initialization during reboot allows you to
+           re-enable and reconfigure.
+
+     Note: Not all devices detected by the Configuration Utility can be
+           controlled by the BIOS. Devices such as tape drives and scanners
+           require that a device driver specific to that peripheral be
+           loaded. The SAS BIOS Configuration Utility does allow parameters
+           to be modified for these devices.
+
+
+**************************************************************************
+*  *  *  *  *  *  * Using the Configuration Utility *  *  *  *  *  *  *  *
+**************************************************************************
+
+
+*   *   * Screen Format *   *   *
+
+All SAS BIOS Configuration Utility screens are partitioned into fixed areas.
+Here is an example:
+
+
+ X 1                                      78
+ Y  ----------------------------------------
+ 1  |   Header Area                        |
+    ----------------------------------------
+ 1  |   Menu Area                          |
+    ----------------------------------------
+ 2  |                                      |
+    |                                      |
+    ... Main Area                        ...
+    |                                      |
+21  |                                      |
+    ----------------------------------------
+22  |                                      |
+    |   Footer Area                        |
+23  |                                      |
+    ----------------------------------------
+
+Header Area
+
+   This area provides static information text, which is typically
+   the product title and version.
+
+Menu Area
+
+   This area provides the current Screen title and Controller
+   information when on screens other than Adapter List.
+
+Main Area
+
+   This is the main area for presenting data. This area has a cursor for
+   item selection, horizontal scrolling, and vertical scrolling. The
+   horizontal and vertical scroll bars appear here if needed.
+
+Footer Area
+
+   This area provides general help information text.
+
+*   *   * User Input *   *   *
+
+Throughout the Configuration Utility there are general key inputs that apply
+on all screens:
+
+F1/Shift+1 = Help
+     Context sensitive help for the cursor-resident field.
+
+Arrow Keys = Select Item
+Home/End   = Select Item
+      Up, down, left, right movement to position the cursor.
+
++/-/Space = Change Item
+      Items with values in [] brackets are modifiable.
+      Numeric keypad '+', numeric keypad '-' and Space updates a modifiable field to
+      its next relative value.
+
+Esc = Abort/Exit
+
+      Escape aborts the current context operation and/or exits the current
+      screen. User confirmation is solicited as required if changes have been
+      made by user.
+
+Enter = Execute <Item>
+
+      Executable items are indicated by highlighted text and a different
+      background colour. Press Enter to execute the field's associated function.
+
+      **Throughout the GUI, selections that are not currently permissible are
+      grayed out.
+
+      Behaviour of executable items will vary throughout the Configuration
+      Utility. Screen details below include info on their executable items.
+
+
+*  *  *  *  *  *  *  *  *  *  * Adapter List *  *  *  *  *  *  *  *  *  *  *  *
+
+When you invoke the SAS BIOS Configuration Utility, the Adapter List appears.
+This screen displays a scrolling list of up to 16 Avago Technologies SAS adapters
+in the system and information about each of them.
+
+Use the arrow keys to select an adapter, then press Enter to view and modify
+the selected adapter's properties (and to gain access to the further screens).
+After selecting an adapter and pressing Enter, the adapter's devices are
+scanned and the Adapter Properties screen appears. An example is shown below.
+
+The Adapter Boot Order is modifiable on this screen by using the -,+,Ins, and
+Del keys while on the Boot Order field. Use Ins/Del to add or remove an adapter
+from the Boot Order. Use the -/+ keys to modify an adapter's position in the
+boot order. When changes have been made to the boot order, the user will be
+prompted to save changes before exiting the screen.
+
+From the Adapter List, the user may also access the Global Properties screen by
+pressing Alt+N.
+
+Global Properties allows changes to global scope settings. Refer to the section
+on Global Properties below.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Adapter List  Global Properties                                              |
+|                                                                              |
+| Adapter     PCI  PCI  PCI  PCI      FW Revision       Status      Boot       |
+|             Bus  Dev  Fnc  Slot                                   Order      |
+| SAS3108     01   00   00   04       2.00.50.00-IR     Enabled     0          |
+| SAS3216     03   00   00   03       00.250.33.00-IT   Enabled     1          |
+| SAS3004     02   00   00   02       1.250.51.00-IR    Enabled                |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu        F1/Shift+1 = Help                                     |
+| Alt+N = Global Properties  -/+ = Alter Boot Order  Ins/Del = Alter Boot List |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Adapter
+
+   Indicates the specific Avago Technologies SAS controller type.
+
+PCI Bus
+
+   Indicates the PCI Bus number (range 0x00 - 0xFF, 0 - 255 decimal)
+   assigned by the system BIOS to an adapter.
+
+PCI Dev
+
+   Indicates the PCI Device (range 0x00 - 0x1F, 0 - 31 decimal) assigned
+   by the system BIOS to an adapter.
+
+PCI Fnc
+
+   Indicates the PCI Function (range 0x00 - 0x7, 0 - 7 decimal) assigned
+   by the system BIOS to an adapter.
+
+PCI Slot
+
+   Indicates the PCI Slot the controller is located in.
+
+FW Revision
+
+   Displays the MPT Firmware version and type (IR or IT)
+
+Status
+
+   Indicates whether an adapter is eligible for Avago Technologies software control
+   or is reserved for control by non-Avago Technologies software
+   (Enabled, Disabled, Error).
+
+   Enabled indicates the BIOS is either currently controlling the adapter
+   or will attempt to control the adapter upon reload.
+
+   Disabled indicates the BIOS is either not controlling the adapter or
+   will discontinue control of the adapter upon reload.
+
+   Whether Enabled or Disabled, the user will still be able to view and
+   modify settings for the adapter.  The Boot Support setting in the Adapter
+   Properties menu can be used to change the status of this setting.  The
+   BIOS must be reloaded (e.g., system rebooted) in order for a new Boot
+   Support setting to take effect.
+
+   Error indicates that the BIOS encountered a problem with the adapter.
+   Viewing and modifying settings for the adapter is allowed but the
+   information and functionality available may be limited.
+
+Boot Order
+
+   The Boot Order specifies the order in which adapters will boot when
+   more than one adapter is in a system. Up to four adapters in a system
+   may be selected as bootable.
+
+   To add an adapter to the boot list, press Insert while on the Boot Order
+   field of the adapter. To remove an adapter from the boot list, press Delete
+   while on the desired adapter's Boot Order field. The -/+ keys can be used
+   to change the adapter's position in the Boot Order.
+
+
+
+*  *  *  *  *  *  *  *  *  *  Global Properties  *  *  *  *  *  *  *  *  *  *
+
+The Global Properties screen is accessible by pressing Alt+N while on the
+Adapter List Screen. To return to Adapter List from Global Properties Alt+N can
+again be pressed.
+
+Here is an example of the Global Properties Menu:
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Adapter List  Global Properties                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|        Pause When Boot Alert Displayed  [Yes]                                |
+|        Boot Information Display Mode    [Display adapters and all devices]   |
+|        Support Interrupt                [Hook interrupt, the Default]        |
+|                                                                              |
+|        Restore Defaults                                                      |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Alt+N = Adapter List  -/+ = Change Item                                      |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Pause When Boot Alert Displayed
+
+     This option specifies whether to pause for user acknowledgement after
+     displaying an alert message during boot. The Boot Alert setting can be
+     either No or Yes.
+
+     To continue after displaying a message, specify No.
+     To wait for any key after displaying a message, specify Yes.
+
+Boot Information Display Mode
+
+     This option specifies the information display mode of the BIOS during
+     boot. It controls how much information about adapters and devices
+     are displayed during boot.  Possible values are:
+
+        Display adapters only
+        Display adapters and all devices
+        Display minimal information
+        Display adapters and installed devices
+
+Support Interrupt
+
+     This option allows the ability to prevent a hook on INT40, if required.
+     Possible values are:
+
+        Hook interrupt, the Default.
+        Bypass interrupt hook.
+
+<Restore Defaults>
+
+    Press Enter to obtain default settings.
+
+
+
+*  *  *  *  *  *  *  *  *  Adapter Properties   *  *  *  *  *  *  *  *  *  *
+
+The Adapter Properties Screen allows you to view and modify adapter settings.
+It also provides access to all other screens. Here is an example of the
+Adapter Properties screen:
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Adapter Properties -- SAS3008                                                |
+|                                                                              |
+|       Adapter                         SAS3008                                |
+|       PCI Slot                        03                                     |
+|       PCI Address(Bus/Dev)            03:00                                  |
+|       MPT Firmware Revision           00.250.23.00-IR                        |
+|       SAS Address                     500605B0:0000C580                      |
+|       NVDATA Version                  00.09                                  |
+|       Status                          Enabled                                |
+|       Boot Order                      1                                      |
+|       Boot Support                    [Enabled BIOS & OS]                    |
+|                                                                              |
+|                                                                              |
+|       RAID Properties                                                        |
+|                                                                              |
+|       SAS Topology                                                           |
+|                                                                              |
+|       Advanced Adapter Properties                                            |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Enter = Select Item   -/+ = Change Item                                      |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Adapter
+
+   Indicates the specific Avago Technologies SAS controller type.
+
+PCI Slot
+
+   Indicates the PCI Slot the controller is located in.
+
+PCI Address
+
+   Displays the PCI Address assigned by the system BIOS to the adapter.
+       Bus value has range 0x00 - 0xFF, 0 - 255 decimal.
+       Device value has range  0x00 - 0x1F, 0 - 31 decimal.
+
+FW Revision
+
+   Displays the MPT Firmware version and type (IR or IT)
+
+SAS Address
+
+   Displays the SAS Address assigned to this adapter.
+
+Status
+
+   Indicates whether an adapter is eligible for Avago Technologies software control
+   or is reserved for control by non-Avago Technologies software (Enabled,
+   Disabled, Error).
+
+   Enabled indicates the BIOS is either currently controlling the adapter
+   or will attempt to control the adapter upon reload.
+
+   Disabled indicates the BIOS is either not controlling the adapter or
+   will discontinue control of the adapter upon reload.
+
+   Whether Enabled or Disabled, the user will still be able to view and
+   modify settings for the adapter.  The Boot Support setting in the Adapter
+   Properties menu can be used to change the status of this setting.  The
+   BIOS must be reloaded (e.g., system rebooted) in order for a new Boot
+   Support setting to take effect.
+
+   Error indicates that the BIOS encountered a problem with the adapter.
+   Viewing and modifying settings for the adapter is allowed but the
+   information and functionality available may be limited.
+
+Boot Order
+
+   The Boot Order specifies the order in which adapters will boot when
+   more than one adapter is in a system. Up to four of the total
+   adapters in a system may be selected as bootable.
+
+Boot Support
+
+   Specifies whether an adapter is eligible for Avago Technologies software control
+   or is reserved for control by non-Avago Technologies software
+   (Enabled BIOS & OS, Enabled BIOS Only, Enabled OS Only, Disabled,
+   default: Enabled BIOS & OS).
+     If Enabled BIOS & OS, then both the bios and OS driver will control the
+   adapter.
+     If Enabled BIOS Only, then the adapter will be controlled by the bios,
+   but OS drivers will not control it.  This setting may not be supported by
+   all OS drivers, for example there is no means to disable an adapter in a
+   Windows driver.
+     If Enabled OS Only, then the bios will not control the adapter but the
+   OS driver will control the adapter.
+     If Disabled, then the bios will not control the adapter when loaded.
+   However, the adapter will still be visible through the Configuration
+   Protocol.
+     Changes to this setting will be reflected in the Status field on the
+   main Adapter List menu.  The new setting will not take effect until the
+   bios is reloaded (e.g., system rebooted).
+
+
+*  *  *  *  *  *  *  *  *  *  SAS Topology *  *  *  *  *  *  *  *  *  *
+
+The SAS Topology screen presents a view of the adapter's SAS hierarchy. This
+screen also provides other user functionality as noted below.
+
+The following objects along with their significant properties are shown:
+        Adapter
+        PHYs
+        Attached Devices
+        Expanders/Enclosures.
+
+The SAS Topology is expanded for display as follows:
+        Select an expander/enclosure and press Enter to expand the Expander or
+        Enclosure and display all its Phys/Devices/Bays.
+
+        Hit Enter again to collapse the expander/Enclosure.
+
+
+While cursor is on the Device Identifier:
+
+-Hit Alt+D access device-specific screen.
+-Hit Alt+M to display additional options.
+-Hit Enter while on expander/enclosure to expand/collapse the display
+-Hit Enter while on device to activate locate LED.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| SAS Topology -- SAS3008                                                      |
+|                      Device Identifier                Device                 |
+| SAS3008(03:03)                                        Info                   |
+| |-Controller         Direct Attach Devices            Controller             |
+|   |-PHY 0            SEAGATE ST9146803SS      B241    SAS                    |
+|   |-PHY 3            ATA     SAMSUNG MCBQE32G 5006    SATA-SSD               |
+| |-Expander           LSILOGICSASx12 A.0               Expander               |
+|   |-PHY 3            ATA     Maxtor 6y080M0   1EW0    SATA                   |
+|   |-PHY 4            SEAGATE ST9146803SS      B241    SAS                    |
+|   |-PHY 7            RAID Physical Disk               SATA                   |
+|   |-PHY 9            RAID Physical Disk               SATA                   |
+| |-RAID0 VOL          LSI     Logical Volume   3000                           |
+|   |-PHY 9            ATA     Maxtor 6y080M0   1EW0    RAID                   |
+|   |-PHY 7            ATA     Maxtor 6y080M0   1EW0    RAID                   |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit   F1/Shift+1 = Help                                              |
+|  Alt+D = Device Properties  Alt+M = More Keys                                |
+|------------------------------------------------------------------------------|
+
+Scrolling Cursor once to the right will display further information:
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| SAS Topology -- SAS3008                                                      |
+|                      Device Identifier                Negotiated Link        |
+| SAS3008(03:03)                                        Speed (Gbps)           |
+| |-Controller         Direct Attach Devices                                   |
+|   |-PHY 0            SEAGATE ST9146803SS      B241    6.0                    |
+|   |-PHY 3            ATA     SAMSUNG MCBQE32G 5006    3.0                    |
+| |-Expander           LSILOGICSASx12 A.0                                      |
+|   |-PHY 3            ATA     Maxtor 6y080M0   1EW0    1.5                    |
+|   |-PHY 4            SEAGATE ST9146803SS      B241    3.0                    |
+|   |-PHY 5            ATA     SAMSUNG MCBQE32G 5006    1.5                    |
+|   |-PHY 7            RAID Physical Disk               1.5                    |
+|   |-PHY 9            RAID Physical Disk               1.5                    |
+| |-RAID0 VOL          LSI     Logical Volume   3000                           |
+|   |-PHY 9            ATA     Maxtor 6y080M0   1EW0                           |
+|   |-PHY 7            ATA     Maxtor 6y080M0   1EW0                           |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit   F1/Shift+1 = Help                                              |
+|  Alt+D = Device Properties  Alt+M = More Keys                                |
+|------------------------------------------------------------------------------|
+
+Scrolling Cursor once more to the right will display further information:
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| SAS Topology -- SAS3008                                                      |
+|                      Device Identifier                Maximum Link           |
+| SAS3008(03:03)                                        Speed (Gbps)           |
+| |-Controller         Direct Attach Devices                                   |
+|   |-PHY 0            SEAGATE ST9146803SS      B241    6.0                    |
+|   |-PHY 3            ATA     SAMSUNG MCBQE32G 5006    6.0                    |
+| |-Expander           LSILOGICSASx12 A.0                                      |
+|   |-PHY 3            ATA     Maxtor 6y080M0   1EW0    3.0                    |
+|   |-PHY 4            SEAGATE ST9146803SS      B241    3.0                    |
+|   |-PHY 5            ATA     SAMSUNG MCBQE32G 5006    3.0                    |
+|   |-PHY 7            RAID Physical Disk               3.0                    |
+|   |-PHY 9            RAID Physical Disk               3.0                    |
+| |-RAID0 VOL          LSI     Logical Volume   3000                           |
+|   |-PHY 9            ATA     Maxtor 6y080M0   1EW0                           |
+|   |-PHY 7            ATA     Maxtor 6y080M0   1EW0                           |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit   F1/Shift+1 = Help                                              |
+|  Alt+D = Device Properties  Alt+M = More Keys                                |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Device Identifier
+
+   This field indicates the ASCII device identifier string extracted from
+   the device's Inquiry Data.
+
+Device Info
+
+   This field indicates if a device is SAS or SATA, and if the device has
+   been selected as the Boot Device.
+
+Negotiated Link Speed
+
+   This field indicates the negotiated link speed for this Phy or whether it
+   has been disabled
+
+Maximum Link Speed
+
+   This field indicates the maximum hardware link rate possible for this Phy.
+
+*  *  *  *  *  *  *  *  *  *  Device Properties  *  *  *  *  *  *  *  *  *  *
+
+
+The Device Properties screen displays information about a specific Device and
+is accessed by pressing Alt+D on the SAS Topology screen when the cursor is on
+the Device Identifier field of a Device.
+
+User can press Alt+N or Alt+P at any time while on this screen to cycle to the
+next/previous device.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Device Properties -- SAS3008                                                 |
+|                                                                              |
+|                                                                              |
+|       Device Identifier                       SEAGATE ST936701SS  B828       |
+|       ConnName:EnclLevel:Slot                 65:1:3                         |
+|       Scan Order                              3                              |
+|       Phy Number                              6                              |
+|       Slot Number                             1                              |
+|       RAID Member                             No                             |
+|       Device Information                      SAS                            |
+|       Neg Physical Link Rate                  6.0 Gbps                       |
+|       Neg Logical Link Rate                   12.0 Gbps (Databolt)           |
+|       Logical Sector Size                     512B                           |
+|       Disk Capacity                           279.3 Gib                      |
+|       SAS Address                             5000C500:001009E1              |
+|       Serial Number                           3LC0093N0000H4442MHE           |
+|                                                                              |
+|                                                                              |
+|       Format                                                                 |
+|                                                                              |
+|       Verify                                                                 |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit   F1/Shift+1 = Help                                              |
+|  Alt+N = Next Device    Alt+P = Previous Device   Enter = Select Item        |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Device Identifier
+
+   This field indicates the ASCII device identifier string extracted from
+   the device's Inquiry Data.
+
+ConnName:EnclLevel:Slot
+
+   This field displays the device associated connector name, enclosure level
+   and slot numbers. This will be suppressed if valid connector name and
+   enclosure level are not found.
+   
+Scan Order
+
+   Indicates the scan order for this device. This would be the equivalent of
+   a SCSI ID in parallel SCSI.
+
+Slot Number
+
+   Indicates the slot number for this device. This is used by enclosures to
+   locate devices.
+
+RAID Member
+
+   If this disk is included in an integrated RAID volume, then this value will
+   be 'Yes'. The disk will be 'No' if it is not a member of an IR volume.
+
+Logical Sector Size
+
+   This is the sector size of the disk. The possible values are 512B, 4K
+   and Unknown (if block size of disk is zero).
+   
+Disk Capacity
+
+   This is the size of the disk.
+
+Device Information
+
+   This field indicates if a device is SAS or SATA.
+
+Neg Physical Link Rate
+
+   Negotiated Physical Link Rate of the device.
+
+Neg Logical Link Rate
+
+   Negotiated Logical Link Rate of the device.
+
+SAS Address
+
+   This field indicates the SAS Address of this device.
+
+Serial Number
+
+   This field indicates the Serial Number of this device.
+
+Format
+
+   Press Enter to enter the low-level format screen for the device. Once
+   on the format screen (see below) you can start a low-level format.
+
+   If enabled, this option allows low-level formatting on a disk drive.
+   Low-level formatting will completely and irreversibly erase all data on the
+   drive.
+
+   Note: Formatting will default the drive to a 512-byte sector size even if
+         the drive had previously been formatted to another sector size.
+
+Verify
+
+   Press Enter to enter the verify all sectors screen. Once on the Verify
+   screen (see below) you can start a verify of all sectors on the device
+   and if needed reassign defective Logical Block Addresses (LBAs).
+
+
+*  *  *  *  *  *  *  *  *  *  Format/Verify Screens  *  *  *  *  *  *  *  *  *  *
+
+The Format and Verify screens have similar layout and are accessed by hitting
+Enter on the appropriate field on the Device Properties screen.
+These screens include an Elapsed Time and status bar that begin incrementing
+once the operation is started and enable user to determine current progress of
+the operation.
+
+Once on the Format screen, pressing the "F" key will begin the format.
+
+     ***ONCE FORMAT HAS STARTED IT CANNOT BE STOPPED OR CANCELLED***
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Device Format -- SAS3008                                                     |
+|                                                                              |
+|       Device Identifier                       SEAGATE ST936701SS  B828       |
+|       SAS Address                             5000C500:001009E1              |
+|       Serial Number                           3LC0093N0000H4442MHE           |
+|                                                                              |
+|       WARNING!                                                               |
+|       Format will permanently erase all data on this device!                 |
+|       Format may take hours to complete and cannot be stopped.               |
+|       Press the 'F' key to begin format or any other key to exit.            |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|       Elapsed Time:     00:00:00                                             |
+|                                                                              |
+|       Percent                                                                |
+|       Complete   0%                                              100%        |
+|                  ---------------------------------------------------         |
+|                  |                                                 |         |
+|                  |                                                 |         |
+|                  ---------------------------------------------------         |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|------------------------------------------------------------------------------|
+
+
+Once on the Verify screen pressing the Enter key will begin the verify.
+
+     User may hit Esc at any time to cancel the verify.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Device Verify -- SAS3008                                                     |
+|                                                                              |
+|       Device Identifier                       SEAGATE ST936701SS  B828       |
+|       SAS Address                             5000C500:001009E1              |
+|       Serial Number                           3LC0093N0000H4442MHE           |
+|                                                                              |
+|       All sectors on the device will be verified                             |
+|       Press Enter to continue or any other key to cancel                     |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|       Elapsed Time:     00:00:00                                             |
+|                                                                              |
+|       Percent                                                                |
+|       Complete   0%                                              100%        |
+|                  ---------------------------------------------------         |
+|                  |                                                 |         |
+|                  |                                                 |         |
+|                  ---------------------------------------------------         |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|------------------------------------------------------------------------------|
+
+*   *   * Field Descriptions *   *   *
+
+Device Identifier
+
+   This field indicates the ASCII device identifier string extracted from
+   the device's Inquiry Data.
+
+SAS Address
+
+   This field indicates the SAS Address of this device.
+
+Serial Number
+
+   This field indicates the Serial Number of this device.
+
+Elapsed Time
+
+   Displays the total time elapsed since Format or Verify Operation started.
+
+Percent Complete
+
+   Graphical status bar display that indicates the current relative % complete
+   of the operation.
+
+
+*  *  *  *  *  *  *  *  *  SAS Topology - More Keys  *  *  *  *  *  *  *  *  *
+
+There are additional functions that can be performed while on the SAS Topology
+screen. These are detailed on by selecting Alt+M from the main SAS Topology
+screen.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| SAS Topology -- SAS3008                                                      |
+|                                                                              |
+| More keys for the SAS Topology display:                                      |
+|                                                                              |
+| Alt+B = Select or deselect a device as the preferred boot device             |
+| Alt+A = Select or deselect a device as the alternate boot device             |
+|                                                                              |
+| Enter = On a SAS Enclosure or Expander - Expand or Collapse Item             |
+| Enter = On a Disk Drive - Turn on the Locate LED (next key press turns off)  |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit   F1/Shift+1 = Help                                              |
+|  Alt+D = Device Properties  Alt+M = More Keys                                |
+|------------------------------------------------------------------------------|
+
+*   *   * Field Descriptions *   *   *
+
+Set/Clear Preferred Boot Device ('Alt+B')
+
+   Press this key to set the highest priority (preferred) boot device. This can
+   be either an INT13 device, or an active RAID volume. This device will be the
+   first device the core BIOS will look for when attempting to boot. Pressing
+   Alt+B for a device that is already the preferred boot device will clear the
+   device's boot status.
+
+Set/Clear Alternate Boot Device ('Alt+A')
+
+   Press this key to set the second priority (alternate) boot device. This can
+   be either an INT13 device, or an active RAID volume. This device will only
+   be checked if the preferred boot device cannot be located by the core BIOS.
+   Pressing Alt+A for a device that is already the alternate boot device will
+   clear the device's boot status.
+
+
+*  *  *  *  *  *  *  *  *  *  Advanced Adapter Properties  *  *  *  *  *  *  *
+
+The Advanced Adapter Properties screen supports viewing and modification of
+infrequently accessed adapter settings. It provides access to advanced
+Device Properties, Adapter Timing Properties, and PHY Properties.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Advanced Adapter Properties -- SAS3008                                       |
+|                                                                              |
+|       IRQ                             0B                                     |
+|       NVM                             Yes                                    |
+|       IO Port Address                 9000                                   |
+|       Chip Revision ID                00                                     |
+|                                                                              |
+|                                                                              |
+|       Advanced Device Properties                                             |
+|       Adapter Timing Properties                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit Menu  F1/Shift+1 = Help                                          |
+|  Enter = Select Item   -/+ = Change Item                                     |
+|------------------------------------------------------------------------------|
+
+*   *   * Field Descriptions *   *   *
+
+IRQ
+
+   Indicates the Interrupt Request Line used by an adapter.  The system
+   BIOS assigns this value.
+
+NVM
+   Indicates whether an adapter has non-volatile memory (NVM) associated
+   with it. An adapter's configuration is stored in its associated NVM.
+
+IO Port Address
+   Indicates the I/O Port Address used to communicate with an adapter. The
+   system BIOS assigns this number.
+
+Chip Revision ID
+
+   Indicates the Revision ID of this adapter.
+
+Advanced Device Properties
+
+   Press Enter to view and modify Advanced Device Properties.
+
+Adapter Timing Properties
+
+   Press Enter to view and modify Adapter Timing Properties.
+
+
+
+*  *  *  *  *  *  *  *  *  Advanced Device Properties  *  *  *  *  *  *  *  *  *
+
+The Advanced Device Properties screen supports viewing and modification of
+infrequently accessed device settings.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Advanced Device Properties -- SAS3008                                        |
+|                                                                              |
+|       Maximum INT 13 devices for this adapter         24                     |
+|                                                                              |
+|       IO Timeout for Block Devices                    10                     |
+|       IO Timeout for Block Devices(Removable)         10                     |
+|       IO Timeout for Sequential Devices               10                     |
+|       IO Timeout for Other Devices                    10                     |
+|       Start Stop Unit Timeout                         30                     |
+|                                                                              |
+|       LUNs to Scan for Block Devices                  All                    |
+|       LUNs to Scan for Block Devices(Removable)       All                    |
+|       LUNs to Scan for Sequential Devices             All                    |
+|       LUNs to Scan for Other Devices                  All                    |
+|                                                                              |
+|       Removable Media Support                         [None]                 |
+|                                                                              |
+|       Restore Defaults                                                       |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit Menu  F1/Shift+1 = Help                                          |
+|  Enter = Select Item   -/+ = Change Item                                     |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Maximum INT 13h Devices for this adapter
+
+   This field specifies the maximum number of devices attached to the
+   adapter for which to install a pre-OS IO interface.  The specified
+   number of devices in the adapter's device scan order list will have
+   an IO interface installed.  An installed IO interface is defined as
+   INT 13H.
+
+   X86 platforms allow a maximum of 24 INT 13h devices per system. Therefore,
+   fewer than the specified number of INT 13h devices may be installed.  The
+   defaults for X86 is 24 devices with a range of 0-24 allowed.
+
+IO Timeout for Block Devices
+
+   This field specifies the time, in seconds, (0-999, 0 means no-timeout) which
+   the host uses to timeout I/Os for the following devices with Non-Removable
+   Media:
+
+        SCSI Device Type 00h - Direct Access
+        SCSI Device Type 04h - Write Once
+        SCSI Device Type 07h - Optical
+        SCSI Device Type 0Eh - Simplified Direct Access
+
+IO Timeout for Block Devices (Removable)
+
+   This field specifies the time, in seconds, (0-999, 0 means no-timeout) which
+   the host uses to timeout I/Os for the following devices with Removable Media:
+
+        SCSI Device Type 00h - Direct Access
+        SCSI Device Type 04h - Write Once
+        SCSI Device Type 05h - CD-ROM
+        SCSI Device Type 07h - Optical
+        SCSI Device Type 0Eh - Simplified Direct Access
+
+IO Timeout for Sequential Devices
+
+   This field specifies the time, in seconds, (0-999, 0 means no-timeout) which
+   the host uses to timeout I/Os for the following devices:
+
+        SCSI Device Type 01h - Sequential Access.
+
+IO Timeout for Other Devices
+
+   This field specifies the time, in seconds, (0-999, 0 means no-timeout) which
+   the host uses to timeout I/Os for devices other than:
+
+        SCSI Device Type 00h - Direct Access
+        SCSI Device Type 01h - Sequential Access
+        SCSI Device Type 04h - Write Once
+        SCSI Device Type 05h - CD-ROM
+        SCSI Device Type 07h - Optical
+        SCSI Device Type 0Eh - Simplified Direct Access
+
+Start Stop Unit Timeout
+
+    Used by the BIOS to timeout any Start Stop Unit command issued to start a drive.
+
+LUNs to Scan for Block Devices
+
+   Controls LUN scans for the following devices with Non-Removable Media:
+
+        SCSI Device Type 00h - Direct Access
+        SCSI Device Type 04h - Write Once
+        SCSI Device Type 07h - Optical
+        SCSI Device Type 0Eh - Simplified Direct Access
+
+    LUN 0 Only:         Scan only LUN 0.
+    All:        Scan all LUNs.
+
+LUNs to Scan for Block Devices(Removable)
+
+   Controls LUN scans for the following devices with Removable Media:
+
+        SCSI Device Type 00h - Direct Access
+        SCSI Device Type 04h - Write Once
+        SCSI Device Type 05h - CD-ROM
+        SCSI Device Type 07h - Optical
+        SCSI Device Type 0Eh - Simplified Direct Access.
+
+    LUN 0 Only:         Scan only LUN 0.
+    All:        Scan all LUNs.
+
+LUNs to Scan for Sequential Devices
+
+    Controls LUN scans for the following devices:
+
+        SCSI Device Type 01h - Sequential Access.
+
+    LUN 0 Only:         Scan only LUN 0.
+    All:        Scan all LUNs.
+
+LUNs to Scan for Other Devices
+
+   Controls LUN scans for all devices other than the following:
+
+        SCSI Device Type 00h - Direct Access
+        SCSI Device Type 01h - Sequential Access
+        SCSI Device Type 04h - Write Once
+        SCSI Device Type 05h - CD-ROM
+        SCSI Device Type 07h - Optical
+        SCSI Device Type 0Eh - Simplified Direct Access.
+
+    LUN 0 Only:         Scan only LUN 0.
+    All:        Scan all LUNs.
+
+Removable Media Support
+
+   This field specifies the removable media support option for an adapter.
+
+   None:
+        Install no INT 13H interface for any Direct Access Removable Media
+        devices.
+
+   Boot Device Only:
+        Install INT 13H interface for a Direct Access Removable Media device if
+        and only if media is present in the device at the time of BIOS
+        initialization and either:
+
+        BBS System
+            The device is selected as the boot device. Refer to the BIOS Boot
+            Specification for a description of BBS.
+
+        Non-BBS System
+                The device is setup as the boot device The adapter the device is
+                connected to is specified as the first adapter (i.e., 0) in the
+                Boot Adapter List. The device is specified as the first device
+                in the adapter's device scan order list.
+
+   With Media Installed:
+        Install INT 13H interfaces for Direct Access Removable Media devices if
+        media is present in the device at the time of BIOS initialization.
+
+Restore Defaults
+
+   Press the Enter key to set default values for all items on this screen.
+
+
+
+*  *  *  *  *  *  *  *  *  Adapter Timing Properties  *  *  *  *  *  *  *  *  *
+
+The Adapter Timing Properties screen supports viewing and modification of
+timing-specific settings.
+
+Note that the Link Error Settings values on this screen display the current
+values for this PHY only and are not modifiable. To modify the Threshold values
+user should return to Advanced Adapter Properties screen.
+
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Adapter Timing Properties -- SAS3008                                         |
+|                                                                              |
+|       Direct Attached Spinup Delay (Secs)     [ 2]                           |
+|                                                                              |
+|       Direct Attached Max Targets to Spinup   [ 0]                           |
+|                                                                              |
+|       Report Device Missing Delay             [   0]                         |
+|                                                                              |
+|       IO Device Missing Delay                 [   0]                         |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc = Exit Menu  F1/Shift+1 = Help                                          |
+|  Enter = Select Item   -/+ = Change Item                                     |
+|------------------------------------------------------------------------------|
+
+*   *   * Field Descriptions *   *   *
+
+Direct Attached Spinup Delay (Secs)
+
+   This field specifies the number of seconds to wait between spinups of
+   devices. Valid only when the device is configured (jumpered) to require a
+   spin up.
+   Values range from 0 to 15.
+
+Direct Attached Max Targets to Spinup
+
+   This field specifies the maximum number of targets that can be simultaneously
+   spinning up. The IOC must delay by the time indicated in spin-up delay field
+   before starting spin-up of the next set of targets. A value of zero in this
+   field is treated the same as a value of one.
+   Values range from 0 to 15.
+
+Report Device Missing Delay
+
+   This field specifies the time (in seconds) the IOC will delay reporting a
+   target device missing after it becomes unavailable. If the device returns
+   before this timer expires, the device is not reported as missing.
+   Values range from 0 to 2032.
+
+IO Device Missing Delay
+
+   This field specifies the time interval (in seconds) the IOC will delay
+   replying to SCSI Initiator request messages when the addressed device is
+   missing due to the inability to access the target device.
+   Values range from 0 to 255.
+
+
+
+*  *  *  *  Integrated RAID Configuration and Management Screens  *  *  *  *  *
+
+Integrated RAID configuration and management involves many screens, all of which
+are accessed by selecting RAID Properties on the Adapter Properties screen.
+
+If there are no RAID volumes currently configured:
+   The user is asked to create a RAID volume
+
+If there are two active RAID volume currently configured:
+   The user is shown the current volume(s) for management purposes.
+
+If there are RAID volumes currently configured, but fewer than two active:
+   The user is given the option to view the current volume(s), or create
+   RAID volumes.
+
+The screens contained in the RAID configuration and management area are:
+   Select RAID Volume Actions
+   Create New Volume
+   View Volume
+   Manage Volume
+   Manage Hot Spares
+
+
+                        * Select RAID Volume Actions *
+
+Select the type of volume to create.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Select New Volume Type -- SAS3008                                            |
+|                                                                              |
+|      View Existing Volume       View the existing configuration              |
+|                                                                              |
+|                                                                              |
+|      Create RAID 1 Volume       Create a RAID 1 volume                       |
+|                                 consisting of 2 disks plus up to 2           |
+|                                 optional hot spares. ALL DATA on             |
+|                                 volume disks will be DELETED!                |
+|                                                                              |
+|      Create RAID 1E/10 Volume   Create a RAID 1E or RAID 10 volume           |
+|                                 consisting of 3 to 10 disks including up     |
+|                                 to two optional hot spares. ALL DATA on      |
+|                                 volume disks will be DELETED!                |
+|                                                                              |
+|      Create RAID 0 Volume       Create a RAID 0 volume consisting of         |
+|                                 2 to 10 disks. ALL DATA on                   |
+|                                 volume disks will be DELETED!                |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Enter = Choose volume type to create                                         |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+View Existing Volume
+
+   If an existing volume is found, then this option will be displayed.
+   Press enter to view existing volumes on the controller.
+
+Create RAID 1 Volume
+
+   Press Enter to create a RAID 1 volume. Existing
+   data on the selected disks will be deleted.
+
+Create RAID 10/1E Volume
+
+   Press Enter to create a RAID 10 or RAID 1E volume. Existing
+   data on the selected disks will be deleted.
+
+Create RAID 0 Volume
+
+   Press Enter to create a RAID 0 volume. Existing
+   data on the selected disks will be deleted.
+
+
+
+                           * Create New Volume *
+
+This screen allows the user to create a new volume by selecting disks for the
+volume. After the volume is configured, the user would press 'C' to create the
+volume. The user will be asked to save changes, which will create the volume.
+During the creation process, the utility will pause.  After which time, the
+user will be taken back to Adapter Properties.
+
+- The Locate LED will turn ON for the enclosure drives that are selected to be
+member of the new volume.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Create New Volume -- SAS3008                                                 |
+|                                                                              |
+|   Volume Type:                         RAID 1                                |
+|   Volume Size:                                                               |
+|                                                                              |
+| Slot  Device Identifier               RAID      Drive       Pred  Disk       |
+| Num                                   Disk      Status      Fail  Size       |
+|   1   SEAGATE ST9146803SS      B241   [Yes]     Primary     No    135 GiB    |
+|   2   SEAGATE ST9146803SS      B241   [Yes]     Secondary   Yes   135 GiB    |
+|   8   ATA     SAMSUNG MCBQE32G 5006   [No]      ---------   ---   29  GiB    |
+|  11   ATA     SAMSUNG MCBQE32G 5006   [No]      ---------   ---   29  GiB    |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Space/+/- = Select disk for volume                 C = Create volume         |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Volume Type
+
+   Indicates the type of volume being created.
+
+Volume Size
+
+   Indicates the size of the volume in Megabytes.
+
+Device Identifier
+
+   This field is the device identifier.
+
+RAID Disk
+
+This field specifies the devices (disks) that make up a RAID volume
+(Yes, No, default: NO).
+
+   If Yes, the device is part of a RAID volume.
+   If No, the device is not part of a RAID volume.
+
+   During the creation of a volume, this field will be No for all
+   members of a pre-existing volume.
+
+   This field is grayed out under the following conditions:
+   - The device does not meet the minimum requirements for use in a RAID volume
+   - The device is not large enough to mirror existing data on the primary drive
+   - This disk has been selected as a Hot Spare for the RAID volume
+   - The device is not interface compatible with another selected volume drive
+   - The disk is already a member of another RAID volume
+
+Drive Status
+
+   Ok              Disk is online and fully functional
+   Missing         Disk is not responding or is not present
+   Failed          Disk is not accessible or has reported a failure
+   Initing         Disk is initializing
+   UserFail        Disk is marked failed at host's request
+   Offline         Disk is offline for some other reason
+   Inactive        Disk has been set inactive
+   RAID            Disk is already a member of another RAID volume
+   Not Syncd       Data on disk is not synchronized with the rest of the volume
+   Primary         Disk is the primary disk in a RAID 1 volume and is OK
+   Secondary       Disk is the secondary disk in a RAID 1 volume and is OK
+   Hot Spare       Disk is a hot spare disk for a RAID 1 or RAID 1E volume
+   Wrg Type        Device is not compatible for use as part of the RAID volume
+   Too Small       Disk is too small to be a hot spare for this volume
+   Max Dsks        Maximum # of disks allowed for this type of volume reached
+                   Maximum # of total IR disks on a controller reached
+   Inc RAID        Disk doesn't support SMART or SATA extended commands
+   Wrg Intfc       Disk interface (SAS/SATA) differs from existing IR disks
+   Inc PI          Disk doesnt support required Protection Information
+
+Pred Fail
+
+   Indicates whether device SMART is predicting device failure (Yes, No).
+
+Size
+
+   Indicates the size of the device in gigabytes (where a gigabyte is
+   (1024 x 1024 x 1024) = 1,073,741,824 bytes).
+
+   If the device is part of a two-disk volume, this field will reflect the size
+   of the volume - not the size of the individual disk.
+
+   If the device is part of a three or more disk volume, this field is the size
+   that the disk makes up within the volume.
+
+   NOTE: When creating a RAID 0 volume, the usable size of the volume is
+   determined by the Number of drives X Size of the smallest drive in the
+   volume. In volumes consisting of different sized drives, excess space on
+   larger drives will be unusable.
+
+
+
+                               * View Volume *
+
+This screen allows the user to view the current volume configuration.
+
+Press Enter to Manage the Volume when Manage Volume is highlighted.
+
+Press Alt+N to view the next volume.
+
+- The Locate LED will turn ON for all the enclosure drives that are part of
+the RAID volume.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| View Volume -- SAS3008                                                       |
+|                                                                              |
+|      Volume                       1 of 1                                     |
+|      Identifier                   LSI Logical Volume  3000                   |
+|      Type                         RAID 1                                     |
+|      Size                         135 GiB                                    |
+|      Status                       Optimal                                    |
+|      Task                         3% Initiated                               |
+|                                                                              |
+|      Manage Volume                                                           |
+|                                                                              |
+| Slot  Device Identifier               RAID   Hot  Drive       Pred  Disk     |
+| Num                                   Disk   Spr  Status      Fail  Size     |
+|   1   SEAGATE ST9146803SS      B241   Yes    No   Primary     No    135 GiB  |
+|   2   SEAGATE ST9146803SS      B241   Yes    No   Secondary   Yes   135 GiB  |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Enter=Select Item   Alt+N=Next Volume                                        |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Volume
+
+   The number of this volume.
+
+Identifier
+
+   The identifier of this volume.
+
+Type
+
+   The RAID type.
+
+Size
+
+   The size of the volume.
+
+Status
+
+   The status of the volume.
+   
+Task
+
+   Currently on going process on volume.
+
+Device Identifier
+
+   This field is the device identifier.
+
+RAID Disk
+
+This field specifies the devices (disks) that make up a RAID volume
+(Yes, No, default: Yes).
+
+   If Yes, the device is part of a RAID volume.
+   If No, the device is not part of a RAID volume.
+
+   This field is grayed out on this screen
+
+Hot Spr
+
+   This field specifies whether a device is a Hot Spare for a RAID volume
+   (Yes, No, default: NO).
+   If Yes, the device will be used as a Hot Spare for the RAID volume.
+   If No, the device will not be used as a Hot Spare for the RAID volume.
+
+   This field is grayed out on this screen
+
+Drive Status
+
+   Ok              Disk is online and fully functional
+   Missing         Disk is not responding or is not present
+   Failed          Disk is not accessible or has reported a failure
+   Initing         Disk is initializing
+   UserFail        Disk is marked failed at host's request
+   Offline         Disk is offline for some other reason
+   Inactive        Disk has been set inactive
+   RAID            Disk is already a member of another RAID volume
+   Not Syncd       Data on disk is not synchronized with the rest of the volume
+   Primary         Disk is the primary disk in a RAID 1 volume and is OK
+   Secondary       Disk is the secondary disk in a RAID 1 volume and is OK
+   Hot Spare       Disk is a hot spare disk for a RAID 1 or RAID 1E volume
+   Wrg Type        Device is not compatible for use as part of the RAID volume
+   Too Small       Disk is too small to be a hot spare for this volume
+   Max Dsks        Maximum # of disks allowed for this type of volume reached
+                   Maximum # of total IR disks on a controller reached
+   Inc RAID        Disk doesn't support SMART or SATA extended commands
+   Wrg Intfc       Disk interface (SAS/SATA) differs from existing IR disks
+   Inc PI          Disk doesnt support required Protection Information
+
+Pred Fail
+
+   Indicates whether device SMART is predicting device failure (Yes, No).
+
+Disk Size
+
+   Indicates the size of the device in gigabytes (where a gigabyte is
+   (1024 x 1024 x 1024) = 1,073,741,824 bytes).
+
+   If the device is part of a two-disk volume, this field will reflect the size
+   of the volume - not the size of the individual disk.
+
+   If the device is part of a three or more disk volume, this field is the size
+   that the disk makes up within the volume.
+
+   NOTE: When creating a RAID 0 volume, the usable size of the volume is
+   determined by the Number of drives X Size of the smallest drive in the
+   volume. In volumes consisting of different sized drives, excess space on
+   larger drives will be unusable.
+
+
+
+                               * Manage Volume *
+
+Manage the current volume.
+
+If the user selects Manage Hot Spare, the utility will display a hot spare
+management screen that has the same layout as the Create New Volume screen.
+
+The user will be asked to confirm selections of Synchronize Volume, Activate
+Volume, and Delete Volume by pressing 'Y' for yes or 'N' for no.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Manage Volume -- SAS3008                                                     |
+|                                                                              |
+|                                                                              |
+|      Identifier                   LSI Logical Volume  3000                   |
+|      Type                         RAID 1                                     |
+|      Size                         135 GiB                                    |
+|      Status                       Optimal                                    |
+|      Task                         30% Initiated                              |
+|                                                                              |
+|      Manage Hot Spares                                                       |
+|                                                                              |
+|      Consistency Check                                                       |
+|                                                                              |
+|      Activate Volume                                                         |
+|                                                                              |
+|      Delete Volume                                                           |
+|                                                                              |
+|      Online Capacity Expansion                                               |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Enter = Select Item                                                          |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Identifier
+
+   The identifier of this volume.
+
+Type
+
+   The RAID type.
+
+Size
+
+   The size of the volume.
+
+Status
+
+   The status of the volume.
+
+Task
+
+   Currently on going process on volume.
+
+Manage Hot Spares
+
+   Press enter to modify the volume's hot spare configuration.
+
+This field is grayed out under the following conditions:
+   - The volume is inactive.
+   - The volume is at its maximum number of devices.
+   - The volume type is RAID 0. RAID 0 volumes do not support
+     Hot Spares. No modifications can be made to a RAID 0
+     volume once it has been created.
+
+Consistency Check
+
+   Press Enter to run a consistency check on the RAID volume.
+
+   This field is grayed out under the following conditions:
+   - The adapter's MPT FW does not support the feature
+   - The volume is a RAID 0
+   - The volume is not optimal
+   - The volume is already running a consistency check
+   - The volume has a consistency check pending
+
+Activate Volume
+
+   This field is used to activate a RAID volume.
+
+Delete Volume
+
+   This field is used to delete the currently displayed RAID volume.
+
+Online Capacity Expansion
+
+   Press enter to expand the volume's maximum size. This will allow the user
+   to create a RAID 1 volume and replace existing volume drive with larger
+   drives. Once each drive is replaced and synchronization for that drive is
+   complete, this option will be allowed (presuming a minimum of 50 GiB
+   difference between the old RAID 1 volume drives and the new ones).
+
+   This field is disabled under the following conditions:
+   - The volume is not a RAID 1 volume
+   - Firmware is configured to disable this feature
+
+                           * Manage Hot Spares *
+
+This screen allows the user to create, delete, or modify hot spares on the
+adapter. After the volume is created, the user can select this screen to
+configure hot spare drives.
+
+- The Locate LED will turn ON for the enclosure drives that are selected to be
+Hot Spare.
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+| Manage Hot Spares -- SAS3008                                                 |
+|                                                                              |
+|      Identifier                   LSI Logical Volume  3000                   |
+|      Type                         RAID 1                                     |
+|      Size                         135 GiB                                    |
+|      Status                       Optimal                                    |
+|      Task                         37% Initiated                              |
+|                                                                              |
+| Slot  Device Identifier                  Hot    Drive       Pred  Disk       |
+| Num                                      Spr    Status      Fail  Size       |
+|   1   SEAGATE ST9146803SS      B241      [No]   RAID        No    135 GiB    |
+|   2   SEAGATE ST9146803SS      B241      [No]   RAID        Yes   135 GiB    |
+|   8   SEAGATE ST9146803SS      B241      [Yes]  ---------   ---   135 GiB    |
+|  11   ATA     SAMSUNG MCBQE32G 5006      [No]   ---------   ---   29  GiB    |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+| Esc = Exit Menu       F1/Shift+1 = Help                                      |
+| Space/+/- = Select disk for volume or hot spare    C = Create volume         |
+|------------------------------------------------------------------------------|
+
+
+*   *   * Field Descriptions *   *   *
+
+Identifier
+
+   The identifier of this volume.
+
+Type
+
+   The RAID type.
+
+Size
+
+   The size of the volume.
+
+Status
+
+   The status of the volume.
+
+Task
+
+   Currently on going process on volume.
+
+Device Identifier
+
+   This field is the device identifier.
+
+Hot Spr
+
+   This field specifies whether a device is a Hot Spare for a RAID volume
+   (Yes, No, default: NO).
+   If Yes, the device will be used as a Hot Spare for the RAID volume.
+   If No, the device will not be used as a Hot Spare for the RAID volume.
+   Notes:
+   - Only two Hot Spares per controller are permitted.
+   - RAID volumes do not require any Hot Spares.
+   - Hot Spares can only be specified after a volume has been created.
+
+   This field is grayed out under the following conditions:
+   - The device does not meet the minimum requirements for use in a RAID volume
+   - There are already two Hot Spares on this controller.
+   - The maximum number of RAID physical disks have been configured (14).
+   - The device isn't large enough to replace a volume disk.
+   - A RAID 0 volume is being displayed. Hot Spares are not supported on
+     RAID 0 volumes.
+   - The device characteristics are not compatible with the volume
+     characteristics (SSD/non-SSD, SAS/SATA, etc.)
+
+Drive Status
+
+   Ok              Disk is online and fully functional
+   Missing         Disk is not responding or is not present
+   Failed          Disk is not accessible or has reported a failure
+   Initing         Disk is initializing
+   UserFail        Disk is marked failed at host's request
+   Offline         Disk is offline for some other reason
+   Inactive        Disk has been set inactive
+   RAID            Disk is already a member of another RAID volume
+   Not Syncd       Data on disk is not synchronized with the rest of the volume
+   Primary         Disk is the primary disk in a RAID 1 volume and is OK
+   Secondary       Disk is the secondary disk in a RAID 1 volume and is OK
+   Hot Spare       Disk is a hot spare disk for a RAID 1 or RAID 1E volume
+   Wrg Type        Device is not compatible for use as part of the RAID volume
+   Too Small       Disk is too small to be a hot spare for this volume
+   Max Dsks        Maximum # of disks allowed for this type of volume reached
+                   Maximum # of total IR disks on a controller reached
+   Inc RAID        Disk doesn't support SMART or SATA extended commands
+   Wrg Intfc       Disk interface (SAS/SATA) differs from existing IR disks
+   Inc PI          Disk doesnt support required Protection Information
+
+Pred Fail
+
+   Indicates whether device SMART is predicting device failure (Yes, No).
+
+Disk Size
+
+   Indicates the size of the device in gigabytes (where a gigabyte is
+   (1024 x 1024 x 1024) = 1,073,741,824 bytes).
+
+   If the device is part of a two-disk volume, this field will reflect the size
+   of the volume - not the size of the individual disk.
+
+   If the device is part of a three or more disk volume, this field is the size
+   that the disk makes up within the volume.
+
+   NOTE: When creating a RAID 0 volume, the usable size of the volume is
+   determined by the Number of drives X Size of the smallest drive in the
+   volume. In volumes consisting of different sized drives, excess space on
+   larger drives will be unusable.
+
+
+*  *  *  *  *  *  * Exiting the SAS Configuration Utility *  *  *  *  *  *  *  *
+
+As some changes only take effect during the exit of the utility, it is important
+to always exit the utility properly.  From the Adapter List, press the Esc key
+to exit the utility.  In addition, the a similar exit screen is used when
+exiting most other screens, and can be used to save settings.
+
+The exit screen will show some options that are grey, indicating that they are
+not available at this time.  Only available options will be selectable.
+
+
+|------------------------------------------------------------------------------|
+| Avago Technologies Config Utility    v8.22.01.00 (2015.03.17)                |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                     Are you sure you want to exit?                           |
+|                     Cancel Exit                                              |
+|                     Save changes and reboot                                  |
+|                     Discard changes and reboot                               |
+|                     Exit the Configuration Utility and Reboot                |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  Esc=Exit Menu    F1/Shift+1=Help                                            |
+|                                                                              |
+|------------------------------------------------------------------------------|
+
+
