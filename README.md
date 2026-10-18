@@ -59,6 +59,27 @@ iXsystems has worked with Broadcom to provide a firmware update that resolves th
 
 &emsp;&emsp;&emsp;![USB Files](images/USB.png)
 
+### Linux
+In Linux, you can use command-line tools:
+1. `fdisk /dev/sdx`
+2. select partition table: `DOS (MBR)`
+3. make new primary partition
+4. select type `0x00c W95 FAT32 (LBA)`
+5. toggle bootable flag with `a`
+6. make file system: `mkfs.vfat -F 32 -n BIOS /dev/sdX1`
+7. mount the disk and copy over the files
+```
+/mnt/
+|-- EFI
+|   `-- Boot
+|       `-- bootx64.efi
+|-- mpt3x64.rom
+|-- mptsas3.rom
+|-- sas3flash.efi
+`-- SAS9300_8i_IT.bin
+```
+
+
 ## 3. Preparing the Adapter
 1. Put the jumper pin on the RAID controller pins. Make sure to put them on the correct pins as there may be multiple to choose from. 
 
@@ -71,6 +92,11 @@ iXsystems has worked with Broadcom to provide a firmware update that resolves th
 2. Record the SAS Address of the controller. DO THIS NOW. This may involve taking apart the RAID controller in case it is hidden. However, that should only require a Phillips screwdriver. The sticker should look like this:
 
 &emsp;&emsp;&emsp;![SAS Address Sticker](images/sasaddress.jpg)
+
+### 9300-8i LSI SAS3008 8-Port 12Gb PCIe
+On this card there is no jumper. But if it is already in IT mode, and you only need to update the firmware to newer version, then you do not have to worry about this. Just carry on without jumper.
+
+Carry on with step `4. Booting the Server into UEFI Shell`, skip step `5. Resetting the Adapter`, and then continue with alternative step `6B`.
 
 ## 4. Booting the Server into UEFI Shell
 
@@ -110,7 +136,7 @@ iXsystems has worked with Broadcom to provide a firmware update that resolves th
 
 &emsp;&emsp;![Noreset](images/noreset.jpg)
 
-## 6. Flashing the Controller
+## 6A. Flashing the Controller
 1. Boot back into the UEFI shell through the USB drive.
 2. Type this command: ```sas3flash.efi -o -e 7```
 
@@ -131,8 +157,26 @@ iXsystems has worked with Broadcom to provide a firmware update that resolves th
 
 5. Lastly, type this command:```sas3flash.efi -list```
 - Verify that all information including the SAS Address are correct.
+6. Continue to step 7
 
-## 6. Complete!
+## 6B. Flashing the Controller (`9300-8i LSI SAS3008 8-Port 12Gb PCIe`)
+This is alternative step to `6A. Flashing the Controller`, it is intended for `9300-8i LSI SAS3008 8-Port 12Gb PCIe` card.
+1. Boot into the UEFI shell through the USB drive.
+2. With `map` find your flash drive and go into it with `fsX` command (as described in `5. Resetting the Adapter`)
+3. Make a backup of firmware with commands:
+```
+sas3flash.efi -c 0 -ufirmware original_fw.bin
+sas3flash.efi -c 0 -o -uflash original_flash.bin
+sas3flash.efi -c 0 -o -ufwbackup original_fwbackup.bin
+sas3flash.efi -c 0 -o -unvdata original_nvdata.bin
+```
+4. Flash the new firmware with `sas3flash -o -f SAS9300_8i_IT.bin`
+5. That is all, no need to set SAS address as it was preserved. This flashing did not touch persistent data.
+6. Verify that all information is still correct with `sas3flash.efi -c 0 -list`
+7. Continue to step 7
+
+
+## 7. Complete!
 - You are now able to reboot the system and have completed this guide.
 
 &emsp;&emsp; - Command in UEFI shell: ```reset```
